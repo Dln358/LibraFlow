@@ -12,9 +12,9 @@ app.use(cors());
 
 // Create a MySQL connection pool
 const pool = mysql.createPool({
-    host: 'DESKTOP-EGR16SJ',
-    user: 'Dylan',
-    password: 'rePBetn7SLWE',
+    host: ' fill in ',
+    user: ' fill in ',
+    password: 'fill in ',
     database: 'libraflow',
 });
 
