@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LibraFlow</title>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <!-- Form to add book -->
+    <h1>Add a New Book</h1>
+    <form id="addBookForm">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required><br>
+
+        <label for="author">Author:</label>
+        <input type="text" id="author" name="author" required><br>
+
+        <label for="genre">Genre:</label>
+        <input type="text" id="genre" name="genre" required><br>
+
+        <label for="ISBN">ISBN:</label>
+        <input type="text" id="ISBN" name="ISBN" required><br>
+
+        <label for="imageURL">Image URL:</label>
+        <input type="text" id="imageURL" name="imageURL"><br>
+
+        <label for="pdfURL">PDF URL:</label>
+        <input type="text" id="pdfURL" name="pdfURL"><br>
+
+        <label for="description">Description:</label><br>
+        <textarea id="description" name="description" rows="4" cols="50"></textarea><br>
+
+        <button type="button" onclick="addBook()">Add Book</button>
+    </form>
+</body>
+</html>
+
+
