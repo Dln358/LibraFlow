@@ -46,6 +46,7 @@ app.post('/api/books', (req, res) => {
     });
 });
 
+// Port testing 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
