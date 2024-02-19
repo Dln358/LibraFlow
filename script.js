@@ -81,7 +81,7 @@ function createBookEntry(book) {
     const bookDiv = document.createElement('div');
     bookDiv.className = 'book-entry';
 
-    // Add content to the book entry (customize this based on your book structure)
+    // Add content to the book entry
     bookDiv.innerHTML = `
         <h2>${book.Title}</h2>
         <p>Author: ${book.Author}</p>
