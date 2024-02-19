@@ -12,9 +12,9 @@ app.use(cors());
 
 // Create a MySQL connection pool
 const pool = mysql.createPool({
-    host: ' fill in ',
-    user: ' fill in ',
-    password: 'fill in ',
+    host: 'fill in',
+    user: 'fill in',
+    password: 'fill in',
     database: 'libraflow',
 });
 
@@ -46,6 +46,7 @@ app.post('/api/books', (req, res) => {
     });
 });
 
+// Port testing 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
