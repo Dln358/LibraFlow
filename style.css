@@ -1,1 +1,5 @@
 /* Styling */
+.modal {
+    display: none;
+    /* other styles */
+}
