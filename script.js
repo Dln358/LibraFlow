@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // function to add a new book
-// add books function 
 async function addBook() {
     const form = document.getElementById('addBookForm');
     const formData = new FormData(form);
@@ -24,18 +23,6 @@ async function addBook() {
             alert('Book added successfully.');
             form.reset(); // reset the form after successful submission
             fetchAndDisplayBooks(); // refresh the book list to include the new book
-            const result = await response.json();
-            if (result.success) {
-                console.log('Book added successfully. BookID:', result.newBookID);
-                alert('Book added successfully. BookID: ' + result.newBookID);
-                // Reset the form
-                form.reset();
-                // refresh the book list to include the new book
-                fetchAndDisplayBooks();
-            } else {
-                console.error('Error adding book:', result.message);
-                alert('Error adding book: ' + result.message);
-            }
         } else {
             alert('Error adding book. Please check the console for details.');
             console.error('Error adding book:', await response.text());
@@ -84,34 +71,7 @@ async function fetchAndDisplayBooks() {
     }
 }
 
-// display books function 
-async function fetchAndDisplayBooks() {
-    try {
-        const response = await fetch('http://localhost:3001/api/books');
-        if (response.ok) {
-            const { data } = await response.json();
-            const booksContainer = document.getElementById('bookList');
-            booksContainer.innerHTML = ''; // Clear existing entries
-            data.forEach(book => {
-                const bookEntry = document.createElement('div');
-                bookEntry.innerHTML = `
-                    <h3>${book.Title}</h3>
-                    <p>Author: ${book.Author}</p>
-                    <p>Genre: ${book.Genre}</p>
-                    <p>ISBN: ${book.ISBN}</p>
-                    <button onclick="deleteBook(${book.BookID})">Delete</button>
-                `;
-                booksContainer.appendChild(bookEntry);
-            });
-        } else {
-            console.error('Failed to fetch books:', response.status);
-        }
-    } catch (error) {
-        console.error('Error fetching books:', error);
-    }
-}
-
-// delete function 
+// Function to delete a book
 async function deleteBook(bookID) {
     const response = await fetch(`http://localhost:3001/api/books/${bookID}`, {
         method: 'DELETE',
@@ -145,16 +105,6 @@ async function loadBookForEdit(bookId) {
         document.getElementById('edit-bookId').value = bookId;
 
         document.getElementById('editBookModal').style.display = 'block';
-    try {
-        const response = await fetch(`http://localhost:3001/api/books/${bookID}`, {
-            method: 'DELETE',
-        });
-        if (response.ok) {
-            alert('Book deleted successfully.');
-            fetchAndDisplayBooks(); // Refresh the book list
-        } else {
-            alert('Error deleting book. Check the console for details.');
-        }
     } catch (error) {
         console.error('Failed to fetch book details:', error);
         alert('Error loading book for editing. Please try again.');
@@ -207,5 +157,3 @@ window.onclick = function(event) {
         closeModal();
     }
 };
-// call this function when the page loads
-document.addEventListener('DOMContentLoaded', fetchAndDisplayBooks);
