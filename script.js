@@ -71,7 +71,7 @@ async function fetchAndDisplayBooks() {
     }
 }
 
-// Function to delete a book
+// function to delete a book
 async function deleteBook(bookID) {
     const response = await fetch(`http://localhost:3001/api/books/${bookID}`, {
         method: 'DELETE',
@@ -157,3 +157,91 @@ window.onclick = function(event) {
         closeModal();
     }
 };
+
+// function to search database for a book
+async function searchBooks() {
+    const searchInput = document.getElementById('searchInput');
+    const searchTerm = searchInput.value.trim().toLowerCase();
+
+    try {
+        const response = await fetch(`http://localhost:3001/api/books`);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch books with status ${response.status}`);
+        }
+
+        const { data } = await response.json();
+        
+        if (!searchTerm) {
+            // if search term is empty, display all books
+            searchResultsDisplay(data);
+            return;
+        }
+
+        // filter the books based on the search term matching title or ISBN
+        const filteredBooks = data.filter(book => 
+            book.Title.toLowerCase().includes(searchTerm) || 
+            book.ISBN.toLowerCase().includes(searchTerm)
+        );
+
+        if (filteredBooks.length === 0) {
+            alert('No books found matching your criteria.');
+            return;
+        }
+
+        searchResultsDisplay(filteredBooks); // display function for filtered results
+    } catch (error) {
+        console.error('Failed to search books:', error);
+        alert('Failed to perform search. Please try again.');
+    }
+}
+
+// function to display search results
+function searchResultsDisplay(books) {
+    const booksContainer = document.getElementById('bookList');
+    booksContainer.innerHTML = ''; // Clear previous results
+
+    books.forEach(book => {
+        const bookEntry = document.createElement('div');
+        bookEntry.innerHTML = `
+            <h3>${book.Title}</h3>
+            <p>Author: ${book.Author}</p>
+            <p>Genre: ${book.Genre}</p>
+            <p>ISBN: ${book.ISBN}</p>
+            <p>Description: ${book.Description}</p>
+            <img src="${book.ImageURL || 'path/to/default/image.png'}" alt="Book Image" style="width:100px;height:100px;object-fit:cover;">
+            <p>PDF URL: <a href="${book.PDFURL}" target="_blank">View PDF</a></p>
+        `;
+        booksContainer.appendChild(bookEntry);
+    });
+}
+
+// function to clear search results and display all books
+function displayAllBooks() {
+    fetchAndDisplayBooks(); 
+}
+
+// listener for pressing enter button to initiate search
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('searchInput');
+    // trigger search on pressing Enter key
+    searchInput.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            searchBooks();
+        }
+    });
+});
+
+// listener for the search input field
+const searchInput = document.getElementById('searchInput');
+searchInput.addEventListener('input', handleSearchInputChange);
+
+// function to handle input change in the search input field
+function handleSearchInputChange() {
+    const searchTerm = searchInput.value.trim().toLowerCase();
+
+    if (!searchTerm) {
+        // if search term is empty, display all books
+        displayAllBooks();
+    }
+}
