@@ -3,3 +3,77 @@
     display: none;
     /* other styles */
 }
+h1 {
+    text-align: center;
+    padding: 10px;
+}
+body {
+    max-width: 2500px;
+    margin-left: 70px;
+    background-color: rgb(153, 175, 215);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+h2 {
+    margin-top: 15px;
+}
+.libraflow-header p {
+    text-align: center;
+    font-weight: 500;
+    font-size: 18px;
+}
+input[type=text] {
+    border: 1px black;
+    border-style: solid;
+    border-radius: 4px;
+    padding: 2px 2px;
+}
+input[type=text]:focus {
+    background-color: rgb(227, 232, 240);
+}
+textarea {
+    border-radius: 4px;
+    margin-left: 20px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+label[for="title"] {
+    margin-right: 18px;
+}
+label[for="genre"] {
+    margin-right: 6px;
+}
+label[for="author"] {
+    margin-right: 6px;
+}
+label[for="ISBN"] {
+    margin-right: 20px;
+}
+label[for="imageURL"] {
+    margin-right: 5px;
+}
+label[for="pdfURL"] {
+    margin-right: 26px;
+}
+.addBookForm-box {
+    border: 2px;
+    border-style: solid; 
+    border-width: thick;
+    border-radius: 10px;
+    border-color: rgb(35, 60, 103);
+    width: 550px;
+}
+.addBookForm-box label {
+    margin-left: 20px;
+}
+.addBookForm-box h2 {
+    margin-left: 20px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+.addBookForm-box button {
+    margin-left: 20px;
+    margin-bottom: 15px;
+}
+.library-photo {
+    margin-top: 20px;
+}
