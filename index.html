@@ -12,7 +12,10 @@
      <!-- Search Bar Container -->
      <div id="searchContainer">
         <input type="text" id="searchInput" placeholder="Search by Title or ISBN">
+        <!-- Search Button-->
         <button onclick="searchBooks()">Search</button>
+        <!-- Add Book button -->
+    <button id="addBookButton" onclick="openAddBookModal()">Add Book</button>
     </div>
 
      <!-- Container to display book entries -->
@@ -22,6 +25,7 @@
     <div id="editBookModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
+            <!-- Form to edit book-->
             <h2>Edit Book</h2>
             <form id="editBookForm">
                 <input type="hidden" id="edit-bookId" name="bookId">
@@ -52,34 +56,41 @@
         </div>
     </div>
 
-    <!-- Form to add book -->
-    <div id="addBookForm-box" class="addBookForm-box">
-        <form id="addBookForm">
+    <!--Modal for Adding Book -->
+    <div id="addBookModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAddBookModal()">&times;</span>
+            <!--Form to Add Book-->
             <h2>Add a New Book</h2>
-            <label for="title">Title:</label>
-            <input type="text" id="title" placeholder="Title" name="title" required>
-
-            <label for="author">Author:</label>
-            <input type="text" id="author" placeholder="Author" name="author" required><br>
-
-            <label for="genre">Genre:</label>
-            <input type="text" id="genre" placeholder="Genre" name="genre" required>
-
-            <label for="ISBN">ISBN:</label>
-            <input type="text" id="ISBN" placeholder="ISBN" name="ISBN" required><br>
-
-            <label for="imageURL">Image:</label>
-            <input type="text" id="imageURL" placeholder="Image URL" name="imageURL">
-
-            <label for="pdfURL">PDF:</label>
-            <input type="text" id="pdfURL" placeholder="PDF URL" name="pdfURL"><br>
-
-            <label for="description">Description:</label><br>
-            <textarea id="description" placeholder="Enter a description here." name="description" rows="4" cols="50"></textarea><br>
-
-            <button type="button" onclick="addBook()">Add Book</button>
-        </form>
+            <form id="addBookForm">
+                
+                <label for="title">Title:</label>
+                <input type="text" id="title" placeholder="Title" name="title" required>
+    
+                <label for="author">Author:</label>
+                <input type="text" id="author" placeholder="Author" name="author" required><br>
+    
+                <label for="genre">Genre:</label>
+                <input type="text" id="genre" placeholder="Genre" name="genre" required>
+    
+                <label for="ISBN">ISBN:</label>
+                <input type="text" id="ISBN" placeholder="ISBN" name="ISBN" required><br>
+    
+                <label for="imageURL">Image:</label>
+                <input type="text" id="imageURL" placeholder="Image URL" name="imageURL">
+    
+                <label for="pdfURL">PDF:</label>
+                <input type="text" id="pdfURL" placeholder="PDF URL" name="pdfURL"><br>
+    
+                <label for="description">Description:</label><br>
+                <textarea id="description" placeholder="Enter a description here." name="description" rows="4" cols="50"></textarea><br>
+    
+                <button type="button" onclick="addBook()">Submit</button>
+                <button type="button" onclick="closeAddBookModal()">Cancel</button>
+            </form>
+        </div>
     </div>
+    
     <div id="library-photo" class="library-photo">
         <img src="libraryphoto.jpg" height="200" alt="Wooden bookcase shelves holding old books" />
     </div>
