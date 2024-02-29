@@ -245,3 +245,13 @@ function handleSearchInputChange() {
         displayAllBooks();
     }
 }
+
+// function to open the Add Book modal
+function openAddBookModal() {
+    document.getElementById('addBookModal').style.display = 'block';
+}
+
+// function to close the Add Book modal
+function closeAddBookModal() {
+    document.getElementById('addBookModal').style.display = 'none';
+}
