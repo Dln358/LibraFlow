@@ -9,17 +9,25 @@
     <script src="script.js" defer></script>
 </head>
 <body>
+    <!-- Page Header -->
+    <div id="header-wrap" class="header-wrap">
+        <img class="header-bg" src="libraryphoto.jpg" alt="Wooden bookcase shelves holding old books" />
+        <div id="header-text" class="header-text">
+            <h1>LibraFlow</h1> 
+            <p>A user-friendly library interface for readers, educators, librarians, and more!</p>
+        </div>
+    </div> 
+
+    <hr />
+
      <!-- Search Bar Container -->
      <div id="searchContainer">
         <input type="text" id="searchInput" placeholder="Search by Title or ISBN">
         <!-- Search Button-->
         <button onclick="searchBooks()">Search</button>
         <!-- Add Book button -->
-    <button id="addBookButton" onclick="openAddBookModal()">Add Book</button>
+        <button id="addBookButton" onclick="openAddBookModal()">Add a Book Here</button>
     </div>
-
-     <!-- Container to display book entries -->
-     <div id="bookList" class="book-list"></div>
 
     <!-- Modal for Editing Book -->
     <div id="editBookModal" class="modal">
@@ -30,21 +38,21 @@
             <form id="editBookForm">
                 <input type="hidden" id="edit-bookId" name="bookId">
                 <label for="edit-title">Title:</label>
-                <input type="text" id="edit-title" name="title" required><br>
+                <input type="text" id="edit-title" name="title" required>
 
                 <label for="edit-author">Author:</label>
                 <input type="text" id="edit-author" name="author" required><br>
 
                 <label for="edit-genre">Genre:</label>
-                <input type="text" id="edit-genre" name="genre" required><br>
+                <input type="text" id="edit-genre" name="genre" required>
 
                 <label for="edit-ISBN">ISBN:</label>
                 <input type="text" id="edit-ISBN" name="ISBN" required><br>
 
-                <label for="edit-imageURL">Image URL:</label>
-                <input type="text" id="edit-imageURL" name="imageURL"><br>
+                <label for="edit-imageURL">Image:</label>
+                <input type="text" id="edit-imageURL" name="imageURL">
 
-                <label for="edit-pdfURL">PDF URL:</label>
+                <label for="edit-pdfURL">PDF:</label>
                 <input type="text" id="edit-pdfURL" name="pdfURL"><br>
 
                 <label for="edit-description">Description:</label><br>
@@ -62,6 +70,7 @@
             <span class="close" onclick="closeAddBookModal()">&times;</span>
             <!--Form to Add Book-->
             <h2>Add a New Book</h2>
+            <p>All fields required.</p>
             <form id="addBookForm">
                 
                 <label for="title">Title:</label>
@@ -83,16 +92,15 @@
                 <input type="text" id="pdfURL" placeholder="PDF URL" name="pdfURL"><br>
     
                 <label for="description">Description:</label><br>
-                <textarea id="description" placeholder="Enter a description here." name="description" rows="4" cols="50"></textarea><br>
+                <textarea id="description" placeholder="Enter a description up to 130 characters here." maxlength="130" name="description" rows="4" cols="50"></textarea><br>
     
                 <button type="button" onclick="addBook()">Submit</button>
                 <button type="button" onclick="closeAddBookModal()">Cancel</button>
             </form>
         </div>
     </div>
-    
-    <div id="library-photo" class="library-photo">
-        <img src="libraryphoto.jpg" height="200" alt="Wooden bookcase shelves holding old books" />
-    </div>
+
+    <!-- Container to display book entries -->
+    <span><div id="bookList" class="book-list"></div></span>
 </body>
 </html>
