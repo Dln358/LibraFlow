@@ -17,7 +17,7 @@
             <p>A user-friendly library interface for readers, educators, librarians, and more!</p>
         </div>
     </div> 
-
+    
     <hr />
 
      <!-- Search Bar Container -->
@@ -47,7 +47,7 @@
                 <input type="text" id="edit-genre" name="genre" required>
 
                 <label for="edit-ISBN">ISBN:</label>
-                <input type="text" id="edit-ISBN" name="ISBN" required><br>
+                <input type="text" id="edit-ISBN" inputmode="numeric" pattern="[0-9]*" maxlength="13" name="ISBN" required><br>
 
                 <label for="edit-imageURL">Image:</label>
                 <input type="text" id="edit-imageURL" name="imageURL">
@@ -56,7 +56,7 @@
                 <input type="text" id="edit-pdfURL" name="pdfURL"><br>
 
                 <label for="edit-description">Description:</label><br>
-                <textarea id="edit-description" name="description" rows="4" cols="50"></textarea><br>
+                <textarea id="edit-description" maxlength="130" name="description" rows="4" cols="50"></textarea><br>
 
                 <button type="button" onclick="updateBook(event)">Submit</button>
                 <button type="button" onclick="closeModal()">Cancel</button>
@@ -83,16 +83,16 @@
                 <input type="text" id="genre" placeholder="Genre" name="genre" required>
     
                 <label for="ISBN">ISBN:</label>
-                <input type="text" id="ISBN" placeholder="ISBN" name="ISBN" required><br>
+                <input type="text" id="ISBN" inputmode="numeric" pattern="[0-9]*" placeholder="ISBN" maxlength="13" name="ISBN" required><br>
     
                 <label for="imageURL">Image:</label>
-                <input type="text" id="imageURL" placeholder="Image URL" name="imageURL">
+                <input type="text" id="imageURL" placeholder="Image URL" name="imageURL"required>
     
                 <label for="pdfURL">PDF:</label>
-                <input type="text" id="pdfURL" placeholder="PDF URL" name="pdfURL"><br>
+                <input type="text" id="pdfURL" placeholder="PDF URL" name="pdfURL" required><br>
     
                 <label for="description">Description:</label><br>
-                <textarea id="description" placeholder="Enter a description up to 130 characters here." maxlength="130" name="description" rows="4" cols="50"></textarea><br>
+                <textarea id="description" placeholder="Enter a description up to 130 characters here." maxlength="130" name="description" rows="4" cols="50" required></textarea><br>
     
                 <button type="button" onclick="addBook()">Submit</button>
                 <button type="button" onclick="closeAddBookModal()">Cancel</button>
@@ -102,5 +102,6 @@
 
     <!-- Container to display book entries -->
     <span><div id="bookList" class="book-list"></div></span>
+
 </body>
 </html>
