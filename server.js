@@ -14,7 +14,7 @@ app.use(cors());
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'Dylan',
-    password: 'fill in',
+    password: '',
     database: 'libraflow',
 });
 
