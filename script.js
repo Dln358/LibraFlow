@@ -13,7 +13,7 @@ async function addBook() {
     formData.forEach((value, key) => { jsonObject[key] = value; });
 
     try {
-        const response = await fetch('http://localhost:3001/api/books', {
+        const response = await fetch('http://localhost:3002/api/books', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(jsonObject),
@@ -35,7 +35,7 @@ async function addBook() {
 
 // function to fetch and display books
 async function fetchAndDisplayBooks() {
-    const response = await fetch('http://localhost:3001/api/books');
+    const response = await fetch('http://localhost:3002/api/books');
     if (response.ok) {
         const { data } = await response.json();
         const booksContainer = document.getElementById('bookList');
@@ -45,10 +45,10 @@ async function fetchAndDisplayBooks() {
             const bookEntry = document.createElement('div');
             bookEntry.innerHTML = `
                 <h3>${book.Title}</h3>
-                <p>Author: ${book.Author}</p>
-                <p>Genre: ${book.Genre}</p>
-                <p>ISBN: ${book.ISBN}</p>
-                <p>Description: ${book.Description}</p>
+                <p>Author: ${book.Author}<br />
+                Genre: ${book.Genre}<br />
+                ISBN: ${book.ISBN}<br />
+                Description: ${book.Description}</p>
                 <img src="${book.ImageURL || 'path/to/default/image.png'}" alt="Book Image" style="width:100px;height:100px;object-fit:cover;">
                 <p>PDF URL: <a href="${book.PDFURL}" target="_blank">View PDF</a></p>
             `;
@@ -73,7 +73,7 @@ async function fetchAndDisplayBooks() {
 
 // function to delete a book
 async function deleteBook(bookID) {
-    const response = await fetch(`http://localhost:3001/api/books/${bookID}`, {
+    const response = await fetch(`http://localhost:3002/api/books/${bookID}`, {
         method: 'DELETE',
     });
 
@@ -88,7 +88,7 @@ async function deleteBook(bookID) {
 
 // function to load book details into the editing form and show the modal
 async function loadBookForEdit(bookId) {
-    const url = `http://localhost:3001/api/books/${bookId}`;
+    const url = `http://localhost:3002/api/books/${bookId}`;
     try {
         const response = await fetch(url);
         if (!response.ok) {
@@ -127,7 +127,7 @@ async function updateBook(event) {
     };
 
     try {
-        const response = await fetch(`http://localhost:3001/api/books/${bookId}`, {
+        const response = await fetch(`http://localhost:3002/api/books/${bookId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(updatedBookData),
@@ -164,7 +164,7 @@ async function searchBooks() {
     const searchTerm = searchInput.value.trim().toLowerCase();
 
     try {
-        const response = await fetch(`http://localhost:3001/api/books`);
+        const response = await fetch(`http://localhost:3002/api/books`);
         if (!response.ok) {
             throw new Error(`Failed to fetch books with status ${response.status}`);
         }
@@ -204,14 +204,26 @@ function searchResultsDisplay(books) {
         const bookEntry = document.createElement('div');
         bookEntry.innerHTML = `
             <h3>${book.Title}</h3>
-            <p>Author: ${book.Author}</p>
-            <p>Genre: ${book.Genre}</p>
-            <p>ISBN: ${book.ISBN}</p>
-            <p>Description: ${book.Description}</p>
+            <p>Author: ${book.Author}<br />
+            Genre: ${book.Genre}<br />
+            ISBN: ${book.ISBN}<br />
+            Description: ${book.Description}</p>
             <img src="${book.ImageURL || 'path/to/default/image.png'}" alt="Book Image" style="width:100px;height:100px;object-fit:cover;">
             <p>PDF URL: <a href="${book.PDFURL}" target="_blank">View PDF</a></p>
         `;
         booksContainer.appendChild(bookEntry);
+
+        // add Delete button
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.addEventListener('click', () => deleteBook(book.BookID));
+        bookEntry.appendChild(deleteButton);
+
+        // add Edit button
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Edit';
+        editButton.addEventListener('click', () => loadBookForEdit(book.BookID));
+        bookEntry.appendChild(editButton);
     });
 }
 
