@@ -12,3 +12,14 @@ CREATE TABLE Books (
     PDFURL VARCHAR(255),
     Description TEXT
 );
+
+-- If you already implemented the previous table, correct it with the following
+ALTER TABLE Books
+    MODIFY ISBN CHAR(13),
+    ADD CONSTRAINT CHK_ISBN (ISBN>1000000000000 AND ISBN<9999999999999);
+
+
+-- Temporary fix i used until further investigation
+ALTER TABLE Books
+    MODIFY ISBN CHAR(13),
+    ADD CONSTRAINT CHK_ISBN CHECK (ISBN REGEXP '^[0-9]+$');
