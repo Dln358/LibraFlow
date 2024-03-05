@@ -17,7 +17,7 @@ async function addBook() {
         const { data } = await response.json();
         
         //statement to prevent duplicate entries
-        if (data.length > 0) {
+        if (data.length > 0 && data.some(book => book.ISBN === jsonObject.ISBN)) {
             alert('This book has already been added.');
             return;
         }
