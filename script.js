@@ -13,13 +13,22 @@ async function addBook() {
     formData.forEach((value, key) => { jsonObject[key] = value; });
 
     try {
-        const response = await fetch('http://localhost:3002/api/books', {
+        const response = await fetch('http://localhost:3002/api/books?ISBN=${jsonObject.ISBN}');
+        const { data } = await response.json();
+        
+        //statement to prevent duplicate entries
+        if (data.length > 0) {
+            alert('This book has already been added.');
+            return;
+        }
+
+        const addBookResponse = await fetch('http://localhost:3002/api/books', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(jsonObject),
         });
 
-        if (response.ok) {
+        if (addBookResponse.ok) {
             alert('Book added successfully.');
             form.reset(); // reset the form after successful submission
             fetchAndDisplayBooks(); // refresh the book list to include the new book
