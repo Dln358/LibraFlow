@@ -14,16 +14,15 @@ app.use(cors());
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'Dylan',
-    password: '8|2Eny-4NXcT',
+    password: 'fill in',
     database: 'libraflow',
 });
 
 app.use(bodyParser.json());
 
 // API endpoint to add a new book
-app.post('/api/books', upload.single("image"), (req, res) => {
-    const { title, author, genre, ISBN, pdfURL, description } = req.body;
-    const imageURL = req.file ? `images/${req.file.filename}` : null; // Get the image URL from req.file
+app.post('/api/books', (req, res) => {
+    const { title, author, genre, ISBN, imageURL, pdfURL, description } = req.body;
 
     // Validation: Check if required fields are present
     if (!title || !author || !genre || !ISBN) {
