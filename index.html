@@ -1,107 +1,243 @@
 <!--index.html-->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LibraFlow</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <script src="script.js" defer></script>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Page Header -->
     <div id="header-wrap" class="header-wrap">
-        <img class="header-bg" src="libraryphoto.jpg" alt="Wooden bookcase shelves holding old books" />
-        <div id="header-text" class="header-text">
-            <h1>LibraFlow</h1> 
-            <p>A user-friendly library interface for readers, educators, librarians, and more!</p>
-        </div>
-    </div> 
-    
+      <img
+        class="header-bg"
+        src="libraryphoto.jpg"
+        alt="Wooden bookcase shelves holding old books"
+      />
+      <div id="header-text" class="header-text">
+        <h1>LibraFlow</h1>
+        <p>
+          A user-friendly library interface for readers, educators, librarians,
+          and more!
+        </p>
+      </div>
+    </div>
     <hr />
 
-     <!-- Search Bar Container -->
-     <div id="searchContainer">
-        <input type="text" id="searchInput" placeholder="Search by Title or ISBN">
-        <!-- Search Button-->
-        <button onclick="searchBooks()">Search</button>
-        <!-- Add Book button -->
-        <button id="addBookButton" onclick="openAddBookModal()">Add a Book Here</button>
+    <!-- Modal for User Registration -->
+    <button id="registerButton" onclick="openRegisterModal()">Register</button>
+    <div id="registerModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeRegisterModal()">&times;</span>
+        <h2>Register</h2>
+        <form id="registerForm">
+          <label for="registerUsername">Username:</label>
+          <input type="text" id="registerUsername" name="username" required />
+
+          <label for="registerEmail">Email:</label>
+          <input
+            type="email"
+            id="registerEmail"
+            name="email"
+            required
+            pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+            title="johndoe@example.com"
+          />
+
+          <label for="registerPassword">Password:</label>
+          <input
+            type="password"
+            id="registerPassword"
+            name="password"
+            required
+            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+            title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+          />
+
+          <label for="confirmPassword">Confirm Password:</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            required
+          />
+          <button type="button" onclick="registerUser()">Register</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal for User Login -->
+    <button id="loginButton" onclick="openLoginModal()">Login</button>
+    <button id="logoutButton" onclick="logoutUser()" style="display: none">
+      Logout
+    </button>
+    <div id="loginModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeLoginModal()">&times;</span>
+        <h2>Login</h2>
+        <form id="loginForm">
+          <label for="loginUsername">Username:</label>
+          <input type="text" id="loginUsername" name="username" required />
+
+          <label for="loginPassword">Password:</label>
+          <input type="password" id="loginPassword" name="password" required />
+
+          <button type="button" onclick="loginUser()">Login</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Search Bar Container -->
+    <div id="searchContainer">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search by Title or ISBN"
+      />
+      <!-- Search Button-->
+      <button onclick="searchBooks()">Search</button>
+      <!-- Add Book button -->
+      <button id="addBookButton" onclick="openAddBookModal()">
+        Add a Book Here
+      </button>
     </div>
 
     <!-- Modal for Editing Book -->
     <div id="editBookModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <!-- Form to edit book-->
-            <h2>Edit Book</h2>
-            <form id="editBookForm">
-                <input type="hidden" id="edit-bookId" name="bookId">
-                <label for="edit-title">Title:</label>
-                <input type="text" id="edit-title" name="title" required>
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <!-- Form to edit book-->
+        <h2>Edit Book</h2>
+        <form id="editBookForm">
+          <input type="hidden" id="edit-bookId" name="bookId" />
+          <label for="edit-title">Title:</label>
+          <input type="text" id="edit-title" name="title" required />
 
-                <label for="edit-author">Author:</label>
-                <input type="text" id="edit-author" name="author" required><br>
+          <label for="edit-author">Author:</label>
+          <input type="text" id="edit-author" name="author" required /><br />
 
-                <label for="edit-genre">Genre:</label>
-                <input type="text" id="edit-genre" name="genre" required>
+          <label for="edit-genre">Genre:</label>
+          <input type="text" id="edit-genre" name="genre" required />
 
-                <label for="edit-ISBN">ISBN:</label>
-                <input type="text" id="edit-ISBN" inputmode="numeric" pattern="[0-9]*" maxlength="13" name="ISBN" required><br>
+          <label for="edit-ISBN">ISBN:</label>
+          <input
+            type="text"
+            id="edit-ISBN"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            maxlength="13"
+            name="ISBN"
+            required
+          /><br />
 
-                <label for="edit-imageURL">Image:</label>
-                <input type="text" id="edit-imageURL" name="imageURL">
+          <label for="edit-imageURL">Image:</label>
+          <input type="text" id="edit-imageURL" name="imageURL" />
 
-                <label for="edit-pdfURL">PDF:</label>
-                <input type="text" id="edit-pdfURL" name="pdfURL"><br>
+          <label for="edit-pdfURL">PDF:</label>
+          <input type="text" id="edit-pdfURL" name="pdfURL" /><br />
 
-                <label for="edit-description">Description:</label><br>
-                <textarea id="edit-description" maxlength="130" name="description" rows="4" cols="50"></textarea><br>
+          <label for="edit-description">Description:</label><br />
+          <textarea
+            id="edit-description"
+            maxlength="130"
+            name="description"
+            rows="4"
+            cols="50"
+          ></textarea
+          ><br />
 
-                <button type="button" onclick="updateBook(event)">Submit</button>
-                <button type="button" onclick="closeModal()">Cancel</button>
-            </form>
-        </div>
+          <button type="button" onclick="updateBook(event)">Submit</button>
+          <button type="button" onclick="closeModal()">Cancel</button>
+        </form>
+      </div>
     </div>
 
     <!--Modal for Adding Book -->
     <div id="addBookModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeAddBookModal()">&times;</span>
-            <!--Form to Add Book-->
-            <h2>Add a New Book</h2>
-            <p>All fields required.</p>
-            <form id="addBookForm">
-                
-                <label for="title">Title:</label>
-                <input type="text" id="title" placeholder="Title" name="title" required>
-    
-                <label for="author">Author:</label>
-                <input type="text" id="author" placeholder="Author" name="author" required><br>
-    
-                <label for="genre">Genre:</label>
-                <input type="text" id="genre" placeholder="Genre" name="genre" required>
-    
-                <label for="ISBN">ISBN:</label>
-                <input type="text" id="ISBN" inputmode="numeric" pattern="[0-9]*" placeholder="ISBN" maxlength="13" name="ISBN" required><br>
-    
-                <label for="imageURL">Image:</label>
-                <input type="text" id="imageURL" placeholder="Image URL" name="imageURL"required>
-    
-                <label for="pdfURL">PDF:</label>
-                <input type="text" id="pdfURL" placeholder="PDF URL" name="pdfURL" required><br>
-    
-                <label for="description">Description:</label><br>
-                <textarea id="description" placeholder="Enter a description up to 130 characters here." maxlength="130" name="description" rows="4" cols="50" required></textarea><br>
-    
-                <button type="button" onclick="addBook()">Submit</button>
-                <button type="button" onclick="closeAddBookModal()">Cancel</button>
-            </form>
-        </div>
+      <div class="modal-content">
+        <span class="close" onclick="closeAddBookModal()">&times;</span>
+        <!--Form to Add Book-->
+        <h2>Add a New Book</h2>
+        <p>All fields required.</p>
+        <form id="addBookForm">
+          <label for="title">Title:</label>
+          <input
+            type="text"
+            id="title"
+            placeholder="Title"
+            name="title"
+            required
+          />
+
+          <label for="author">Author:</label>
+          <input
+            type="text"
+            id="author"
+            placeholder="Author"
+            name="author"
+            required
+          /><br />
+
+          <label for="genre">Genre:</label>
+          <input
+            type="text"
+            id="genre"
+            placeholder="Genre"
+            name="genre"
+            required
+          />
+
+          <label for="ISBN">ISBN:</label>
+          <input
+            type="text"
+            id="ISBN"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            placeholder="ISBN"
+            maxlength="13"
+            name="ISBN"
+            required
+          /><br />
+
+          <label for="imageURL">Image:</label>
+          <input
+            type="text"
+            id="imageURL"
+            placeholder="Image URL"
+            name="imageURL"
+            required
+          />
+
+          <label for="pdfURL">PDF:</label>
+          <input
+            type="text"
+            id="pdfURL"
+            placeholder="PDF URL"
+            name="pdfURL"
+            required
+          /><br />
+
+          <label for="description">Description:</label><br />
+          <textarea
+            id="description"
+            placeholder="Enter a description up to 130 characters here."
+            maxlength="130"
+            name="description"
+            rows="4"
+            cols="50"
+            required
+          ></textarea
+          ><br />
+
+          <button type="button" onclick="addBook()">Submit</button>
+          <button type="button" onclick="closeAddBookModal()">Cancel</button>
+        </form>
+      </div>
     </div>
 
     <!-- Container to display book entries -->
     <span><div id="bookList" class="book-list"></div></span>
-
-</body>
+  </body>
 </html>
