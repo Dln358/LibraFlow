@@ -16,7 +16,7 @@
 1. In your code editor(VScode) terminal enter the following dependencies. 
 2. " npm init -y ".
 3. " npm install express body-parser mysql ".
-4. " npm install cors ". 
+4. " npm install cors bcrypt jsonwebtoken ". 
 5. Ensure you are connected and running " node server.js ".
 6. In your Server.js file please enter the host, user, password, database names.
 7. Note I used port 3001, assuming this isn't used on your machine it should work. If taken you will need to change it to something like 3002 etc. and change it in script.js as well.
