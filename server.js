@@ -254,8 +254,37 @@ app.post("/api/users/login", async (req, res) => {
   });
 });
 
+// API endpoint to authenticate token
 app.get("/api/protected", authenticateToken, (req, res) => {
   res.json({ message: "This is protected content." });
+});
+
+// API endpoint to store user likes
+app.post("/api/books/like", authenticateToken, async (req, res) => {
+  const userId = req.user.userID; // Extracted from JWT
+  const { bookId } = req.body;
+
+  // Check if the book is already liked by the user
+  const existingLikeQuery = "SELECT * FROM likes WHERE UserID = ? AND BookID = ?";
+  pool.query(existingLikeQuery, [userId, bookId], (error, results) => {
+      if (error) return res.status(500).json({ message: "Internal server error" });
+
+      if (results.length > 0) {
+          // Unlike the book
+          const deleteLikeQuery = "DELETE FROM likes WHERE UserID = ? AND BookID = ?";
+          pool.query(deleteLikeQuery, [userId, bookId], (error) => {
+              if (error) return res.status(500).json({ message: "Internal server error" });
+              res.json({ success: true, message: "Book unliked successfully." });
+          });
+      } else {
+          // Like the book
+          const insertLikeQuery = "INSERT INTO likes (UserID, BookID) VALUES (?, ?)";
+          pool.query(insertLikeQuery, [userId, bookId], (error) => {
+              if (error) return res.status(500).json({ message: "Internal server error" });
+              res.json({ success: true, message: "Book liked successfully." });
+          });
+      }
+  });
 });
 
 // Start the server

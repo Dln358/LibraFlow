@@ -67,8 +67,13 @@ async function fetchAndDisplayBooks() {
                 <p>PDF URL: <a href="${
                   book.PDFURL
                 }" target="_blank">View PDF</a></p>
+                <button class="like-btn" data-bookid="${book.BookID}">Like</button>
             `;
       booksContainer.appendChild(bookEntry);
+
+      // add like button
+      const likeButton = bookEntry.querySelector(".like-btn");
+      likeButton.addEventListener('click', () => toggleLike(book.BookID));
 
       // add Delete button
       const deleteButton = document.createElement("button");
@@ -388,4 +393,32 @@ function openLoginModal() {
 
 function closeLoginModal() {
   document.getElementById("loginModal").style.display = "none";
+}
+
+// function for liking books
+async function toggleLike(bookId) {
+  const token = localStorage.getItem("userToken");
+  if (!token) {
+      alert("Please log in to like books.");
+      return;
+  }
+  
+  const response = await fetch(`http://localhost:3002/api/books/like`, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ bookId })
+  });
+  
+  const data = await response.json();
+  if (data.success) {
+    // update the button state
+
+    // refresh the books list
+      fetchAndDisplayBooks();
+  } else {
+      alert(data.message);
+  }
 }

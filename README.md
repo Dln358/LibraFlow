@@ -21,4 +21,3 @@
 6. In your Server.js file please enter the host, user, password, database names.
 7. Note I used port 3001, assuming this isn't used on your machine it should work. If taken you will need to change it to something like 3002 etc. and change it in script.js as well.
 
-# How to use
