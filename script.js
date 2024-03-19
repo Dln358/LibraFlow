@@ -45,15 +45,23 @@ async function addBook() {
   }
 }
 
+//new function
+//function to sort book titles from A-Z
+function sortBooks(books) {
+  return books.sort((a, b) => a.Title.localeCompare(b.Title));
+}
+
 // function to fetch and display books
 async function fetchAndDisplayBooks() {
   const response = await fetch("http://localhost:3002/api/books");
   if (response.ok) {
     const { data } = await response.json();
+    //new function
+    const sorted = sortBooks(data);
     const booksContainer = document.getElementById("bookList");
     booksContainer.innerHTML = ""; // clear existing entries
 
-    data.forEach((book) => {
+    sorted.forEach(book => {
       const bookEntry = document.createElement("div");
       bookEntry.innerHTML = `
                 <h3>${book.Title}</h3>
@@ -69,6 +77,23 @@ async function fetchAndDisplayBooks() {
                 }" target="_blank">View PDF</a></p>
                 <button class="like-btn" data-bookid="${book.BookID}">Like</button>
             `;
+    
+    /*data.forEach((book) => {
+      const bookEntry = document.createElement("div");
+      bookEntry.innerHTML = `
+                <h3>${book.Title}</h3>
+                <p>Author: ${book.Author}<br />
+                Genre: ${book.Genre}<br />
+                ISBN: ${book.ISBN}<br />
+                Description: ${book.Description}</p>
+                <img src="${
+                  book.ImageURL || "path/to/default/image.png"
+                }" alt="Book Image" style="width:100px;height:100px;object-fit:cover;">
+                <p>PDF URL: <a href="${
+                  book.PDFURL
+                }" target="_blank">View PDF</a></p>
+                <button class="like-btn" data-bookid="${book.BookID}">Like</button>
+            `;*/ //old function
       booksContainer.appendChild(bookEntry);
 
       // add like button
