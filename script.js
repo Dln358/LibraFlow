@@ -45,15 +45,23 @@ async function addBook() {
   }
 }
 
+//new function
+//function to sort book titles from A-Z
+function sortBooks(books) {
+  return books.sort((a, b) => a.Title.localeCompare(b.Title));
+}
+
 // function to fetch and display books
 async function fetchAndDisplayBooks() {
   const response = await fetch("http://localhost:3002/api/books");
   if (response.ok) {
     const { data } = await response.json();
+    //new function
+    const sorted = sortBooks(data);
     const booksContainer = document.getElementById("bookList");
     booksContainer.innerHTML = ""; // clear existing entries
 
-    data.forEach((book) => {
+    sorted.forEach(book => {
       const bookEntry = document.createElement("div");
       bookEntry.innerHTML = `
                 <h3>${book.Title}</h3>
@@ -69,6 +77,23 @@ async function fetchAndDisplayBooks() {
                 }" target="_blank">View PDF</a></p>
                 <button class="like-btn" data-bookid="${book.BookID}">Like</button>
             `;
+    
+    /*data.forEach((book) => {
+      const bookEntry = document.createElement("div");
+      bookEntry.innerHTML = `
+                <h3>${book.Title}</h3>
+                <p>Author: ${book.Author}<br />
+                Genre: ${book.Genre}<br />
+                ISBN: ${book.ISBN}<br />
+                Description: ${book.Description}</p>
+                <img src="${
+                  book.ImageURL || "path/to/default/image.png"
+                }" alt="Book Image" style="width:100px;height:100px;object-fit:cover;">
+                <p>PDF URL: <a href="${
+                  book.PDFURL
+                }" target="_blank">View PDF</a></p>
+                <button class="like-btn" data-bookid="${book.BookID}">Like</button>
+            `;*/ //old function
       booksContainer.appendChild(bookEntry);
 
       // add like button
@@ -89,6 +114,48 @@ async function fetchAndDisplayBooks() {
     });
   } else {
     console.error("Failed to fetch books:", await response.text());
+  }
+}
+
+// function to fetch and display liked books
+async function fetchAndDisplayLikedBooks() {
+  // Retrieve the JWT token
+  const token = localStorage.getItem("userToken");
+
+  const response = await fetch("http://localhost:3002/api/user/liked-books", { // Correct URL
+    method: "GET",
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  });
+
+  if (response.ok) {
+    const responseBody = await response.json(); // Get the response body
+    console.log(responseBody); // Log the response body to debug
+    const { likedBooks } = responseBody; // Destructure likedBooks from the response
+    const booksContainer = document.getElementById("bookList");
+    booksContainer.innerHTML = ""; // Clear existing entries
+
+    likedBooks.forEach((book) => {
+      const bookEntry = document.createElement("div");
+      bookEntry.innerHTML = `
+                <h3>${book.Title}</h3>
+                <p>Author: ${book.Author}<br />
+                Genre: ${book.Genre}<br />
+                ISBN: ${book.ISBN}<br />
+                Description: ${book.Description}</p>
+                <img src="${book.ImageURL || "path/to/default/image.png"}" alt="Book Image" style="width:100px;height:100px;object-fit:cover;">
+                <p>PDF URL: <a href="${book.PDFURL}" target="_blank">View PDF</a></p>
+                <button class="like-btn" data-bookid="${book.BookID}">Like</button>
+            `;
+      booksContainer.appendChild(bookEntry);
+
+      // add like button
+      const likeButton = bookEntry.querySelector(".like-btn");
+      likeButton.addEventListener('click', () => toggleLike(book.BookID));
+    });
+  } else {
+    console.error("Failed to fetch liked books:", await response.text());
   }
 }
 
@@ -418,6 +485,7 @@ async function toggleLike(bookId) {
 
     // refresh the books list
       fetchAndDisplayBooks();
+      fetchAndDisplayLikedBooks();
   } else {
       alert(data.message);
   }
