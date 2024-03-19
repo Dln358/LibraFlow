@@ -116,10 +116,10 @@
           <input type="text" id="edit-title" name="title" required />
 
           <label for="edit-author">Author:</label>
-          <input type="text" id="edit-author" name="author" required /><br />
+          <input type="text" id="edit-author" name="author" onkeydown="return /[a-zA-Z]/i.test(event.key)" required /><br />
 
           <label for="edit-genre">Genre:</label>
-          <input type="text" id="edit-genre" name="genre" required />
+          <input type="text" id="edit-genre" name="genre" onkeydown="return /[a-zA-Z]/i.test(event.key)" required />
 
           <label for="edit-ISBN">ISBN:</label>
           <input
@@ -177,6 +177,7 @@
             id="author"
             placeholder="Author"
             name="author"
+            onkeydown="return /[a-zA-Z]/i.test(event.key)"
             required
           /><br />
 
@@ -186,6 +187,7 @@
             id="genre"
             placeholder="Genre"
             name="genre"
+            onkeydown="return /[a-zA-Z]/i.test(event.key)"
             required
           />
 
