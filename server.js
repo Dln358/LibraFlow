@@ -287,6 +287,33 @@ app.post("/api/books/like", authenticateToken, async (req, res) => {
   });
 });
 
+// API endpoint to get liked books details for a specific user
+app.get("/api/user/liked-books", authenticateToken, async (req, res) => {
+  const userId = req.user.userID; // Extracted from JWT
+  // SQL query to join Likes and Books tables to fetch liked books details for the specified user
+  const query = `
+      SELECT B.BookID, B.Title, B.Author, B.Genre, B.ISBN, B.ImageURL, B.PDFURL, B.Description
+      FROM Likes L
+      INNER JOIN Books B ON L.BookID = B.BookID
+      WHERE L.UserID = ?;
+  `;
+
+  pool.query(query, [userId], (error, results) => {
+      if (error) {
+          // Handle any errors during query execution
+          return res.status(500).json({ message: "Internal server error" });
+      }
+
+      if (results.length > 0) {
+          // Return the list of liked books for the user
+          res.json({ success: true, likedBooks: results });
+      } else {
+          // Handle the case where the user has not liked any books
+          res.status(404).json({ success: false, message: "No liked books found for this user." });
+      }
+  });
+});
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
