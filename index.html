@@ -92,7 +92,7 @@
       </div>
     </div>
   </div>
-  
+
     <!-- Search Bar Container -->
     <div id="searchContainer">
       <input
@@ -120,10 +120,10 @@
           <input type="text" id="edit-title" name="title" required />
 
           <label for="edit-author">Author:</label>
-          <input type="text" id="edit-author" name="author" onkeydown="return /[a-zA-Z]/i.test(event.key)" required /><br />
+          <input type="text" id="edit-author" name="author" onkeydown="return /[a-zA-Z\s]/i.test(event.key)" required /><br />
 
           <label for="edit-genre">Genre:</label>
-          <input type="text" id="edit-genre" name="genre" onkeydown="return /[a-zA-Z]/i.test(event.key)" required />
+          <input type="text" id="edit-genre" name="genre" onkeydown="return /[a-zA-Z\s]/i.test(event.key)" required />
 
           <label for="edit-ISBN">ISBN:</label>
           <input
@@ -145,7 +145,7 @@
           <label for="edit-description">Description:</label><br />
           <textarea
             id="edit-description"
-            maxlength="130"
+            maxlength="335"
             name="description"
             rows="4"
             cols="50"
@@ -181,7 +181,7 @@
             id="author"
             placeholder="Author"
             name="author"
-            onkeydown="return /[a-zA-Z]/i.test(event.key)"
+            onkeydown="return /[a-zA-Z\s]/i.test(event.key)"
             required
           /><br />
 
@@ -191,7 +191,7 @@
             id="genre"
             placeholder="Genre"
             name="genre"
-            onkeydown="return /[a-zA-Z]/i.test(event.key)"
+            onkeydown="return /[a-zA-Z\s]/i.test(event.key)"
             required
           />
 
@@ -229,7 +229,7 @@
           <textarea
             id="description"
             placeholder="Enter a description up to 130 characters here."
-            maxlength="130"
+            maxlength="335"
             name="description"
             rows="4"
             cols="50"

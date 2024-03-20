@@ -63,14 +63,14 @@ async function fetchAndDisplayBooks() {
       const bookEntry = document.createElement("div");
       bookEntry.innerHTML = `
                 <h3>${book.Title}</h3>
-                <p>Author: ${book.Author}<br />
-                Genre: ${book.Genre}<br />
-                ISBN: ${book.ISBN}<br />
-                Description: ${book.Description}</p>
+                <p><strong>Author:</strong> ${book.Author}<br />
+                <strong>Genre:</strong> ${book.Genre}<br />
+                <strong>ISBN:</strong> ${book.ISBN}<br />
+                <strong>Description:</strong> ${book.Description}</p>
                 <img src="${
                   book.ImageURL || "path/to/default/image.png"
-                }" alt="Book Image" style="width:100px;height:100px;object-fit:cover;">
-                <p>PDF URL: <a href="${
+                }" alt="Book Image" style="width:100px;height:150px;object-fit:cover;">
+                <p><strong>PDF URL:</strong> <a href="${
                   book.PDFURL
                 }" target="_blank">View PDF</a></p>
                 <button class="like-btn" data-bookid="${book.BookID}">Like</button>
@@ -122,12 +122,12 @@ async function fetchAndDisplayLikedBooks() {
       const bookEntry = document.createElement("div");
       bookEntry.innerHTML = `
                 <h3>${book.Title}</h3>
-                <p>Author: ${book.Author}<br />
-                Genre: ${book.Genre}<br />
-                ISBN: ${book.ISBN}<br />
-                Description: ${book.Description}</p>
-                <img src="${book.ImageURL || "path/to/default/image.png"}" alt="Book Image" style="width:100px;height:100px;object-fit:cover;">
-                <p>PDF URL: <a href="${book.PDFURL}" target="_blank">View PDF</a></p>
+                <p><strong>Author:</strong> ${book.Author}<br />
+                <strong>Genre:</strong> ${book.Genre}<br />
+                <strong>ISBN:</strong> ${book.ISBN}<br />
+                <strong>Description:</strong> ${book.Description}</p>
+                <img src="${book.ImageURL || "path/to/default/image.png"}" alt="Book Image" style="width:100px;height:150px;object-fit:cover;">
+                <p><strong>PDF URL:</strong> <a href="${book.PDFURL}" target="_blank">View PDF</a></p>
                 <button class="like-btn" data-bookid="${book.BookID}">Like</button>
             `;
       booksContainer.appendChild(bookEntry);
@@ -275,14 +275,14 @@ function searchResultsDisplay(books) {
     const bookEntry = document.createElement("div");
     bookEntry.innerHTML = `
             <h3>${book.Title}</h3>
-            <p>Author: ${book.Author}<br />
-            Genre: ${book.Genre}<br />
-            ISBN: ${book.ISBN}<br />
-            Description: ${book.Description}</p>
+            <p><strong>Author:</strong> ${book.Author}<br />
+            <strong>Genre:</strong> ${book.Genre}<br />
+            <strong>ISBN:</strong> ${book.ISBN}<br />
+            <strong>Description:</strong> ${book.Description}</p>
             <img src="${
               book.ImageURL || "path/to/default/image.png"
-            }" alt="Book Image" style="width:100px;height:100px;object-fit:cover;">
-            <p>PDF URL: <a href="${
+            }" alt="Book Image" style="width:100px;height:150px;object-fit:cover;">
+            <p><strong>PDF URL:</strong> <a href="${
               book.PDFURL
             }" target="_blank">View PDF</a></p>
         `;

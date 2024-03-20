@@ -64,7 +64,7 @@ label[for="genre"] {
     margin-right: 6px;
 }
 label[for="author"] {
-    margin-right: 6px;
+    margin-right: 5px;
 }
 label[for="ISBN"] {
     margin-right: 20px;
@@ -87,7 +87,6 @@ label[for="pdfURL"] {
     border-radius: 10px;
     border-color:rgb(35, 60, 103);
     width: 550px;
-    float: right;
     position: relative;
 }
 #editBookModal label {
@@ -333,4 +332,9 @@ hr {
 }
 #registerModal button:hover {
     box-shadow: 2px 2px 3px;
+}
+
+/* Prevents description from reaching across page */
+#bookList p {
+    margin-right: 1300px;
 }
