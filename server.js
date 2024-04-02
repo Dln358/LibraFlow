@@ -274,14 +274,14 @@ app.post("/api/books/like", authenticateToken, async (req, res) => {
           const deleteLikeQuery = "DELETE FROM likes WHERE UserID = ? AND BookID = ?";
           pool.query(deleteLikeQuery, [userId, bookId], (error) => {
               if (error) return res.status(500).json({ message: "Internal server error" });
-              res.json({ success: true, message: "Book unliked successfully." });
+              res.json({ success: true, liked: false, message: "Book unliked successfully." });
           });
       } else {
           // Like the book
           const insertLikeQuery = "INSERT INTO likes (UserID, BookID) VALUES (?, ?)";
           pool.query(insertLikeQuery, [userId, bookId], (error) => {
               if (error) return res.status(500).json({ message: "Internal server error" });
-              res.json({ success: true, message: "Book liked successfully." });
+              res.json({ success: true, liked: true, message: "Book liked successfully." });
           });
       }
   });
