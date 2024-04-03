@@ -468,15 +468,15 @@ async function loginUser() {
 function checkLoginState() {
   const token = localStorage.getItem("userToken");
   if (token) {
-    // user is logged in UI
-    document.getElementById("loginButton").style.display = "none";
-    document.getElementById("registerButton").style.display = "none";
-    document.getElementById("logoutButton").style.display = "block";
+    // User is logged in UI
+    document.getElementById("loginLink").style.display = "none";
+    document.getElementById("registerLink").style.display = "none";
+    document.getElementById("logoutLink").style.display = "block";
   } else {
-    // no user is logged in, show login and register buttons
-    document.getElementById("loginButton").style.display = "block";
-    document.getElementById("registerButton").style.display = "block";
-    document.getElementById("logoutButton").style.display = "none";
+    // No user is logged in, show login and register links
+    document.getElementById("loginLink").style.display = "block";
+    document.getElementById("registerLink").style.display = "block";
+    document.getElementById("logoutLink").style.display = "none";
   }
 }
 
