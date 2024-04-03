@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LibraFlow</title>
     <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+
     <script src="script.js" defer></script>
   </head>
   <body>
@@ -25,9 +30,8 @@
       </div>
     </div>
     <hr />
-    
+
     <!-- Modal for User Registration -->
-    <button id="registerButton" onclick="openRegisterModal()">Register</button>
     <div id="registerModal" class="modal">
       <div class="modal-content">
         <span class="close" onclick="closeRegisterModal()">&times;</span>
@@ -69,7 +73,6 @@
     </div>
 
     <!-- Modal for User Login -->
-    <button id="loginButton" onclick="openLoginModal()">Login</button>
     <button id="logoutButton" onclick="logoutUser()" style="display: none">
       Logout
     </button>
@@ -89,21 +92,6 @@
       </div>
     </div>
 
-    <!-- Search Bar Container -->
-    <div id="searchContainer">
-      <input
-        type="text"
-        id="searchInput"
-        placeholder="Search by Title or ISBN"
-      />
-      <!-- Search Button-->
-      <button onclick="searchBooks()">Search</button>
-      <!-- Add Book button -->
-      <button id="addBookButton" onclick="openAddBookModal()">
-        Add a Book Here
-      </button>
-    </div>
-
     <!-- Modal for Editing Book -->
     <div id="editBookModal" class="modal">
       <div class="modal-content">
@@ -116,10 +104,22 @@
           <input type="text" id="edit-title" name="title" required />
 
           <label for="edit-author">Author:</label>
-          <input type="text" id="edit-author" name="author" onkeydown="return /[a-zA-Z\s\.]/i.test(event.key)" required /><br />
+          <input
+            type="text"
+            id="edit-author"
+            name="author"
+            onkeydown="return /[a-zA-Z\s\.]/i.test(event.key)"
+            required
+          /><br />
 
           <label for="edit-genre">Genre:</label>
-          <input type="text" id="edit-genre" name="genre" onkeydown="return /[a-zA-Z\s]/i.test(event.key)" required />
+          <input
+            type="text"
+            id="edit-genre"
+            name="genre"
+            onkeydown="return /[a-zA-Z\s]/i.test(event.key)"
+            required
+          />
 
           <label for="edit-ISBN">ISBN:</label>
           <input
@@ -239,9 +239,70 @@
       </div>
     </div>
 
+    <!--Book list header container-->
+    <div id="bookList-header">
+      <!-- Dropdown Menu for Book Filters -->
+      <div class="dropdown">
+        <button class="header-btn dropdown-toggle">Filter</button>
+        <div class="dropdown-content" id="dropdownContent">
+          <a href="#" onclick="fetchAndDisplayBooks(); return false;"
+            >All Books</a
+          >
+          <a href="#" onclick="fetchAndDisplayLikedBooks(); return false;"
+            >Liked Books</a
+          >
+        </div>
+      </div>
+      <!-- Search Bar Container -->
+      <div id="searchContainer">
+        <div class="input-group">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search by Title or ISBN"
+          />
+          <button class="header-btn search-btn" onclick="searchBooks()">
+            <i class="fas fa-search"></i>
+            <!-- Search Icon-->
+          </button>
+        </div>
+        <!-- Add Book button -->
+        <button
+          id="addBookButton"
+          class="header-btn add-book-btn"
+          onclick="openAddBookModal()"
+        >
+          Add a Book Here
+        </button>
+      </div>
+      <!-- User Dropdown Menu -->
+      <div class="dropdown user-dropdown">
+        <button class="header-btn dropdown-toggle">
+          <i class="fas fa-user"></i>
+          <!-- Person Icon -->
+        </button>
+        <div class="dropdown-content" id="userDropdownContent">
+          <a href="#" id="loginLink" onclick="openLoginModal(); return false;"
+            >Login</a
+          >
+          <a
+            href="#"
+            id="registerLink"
+            onclick="openRegisterModal(); return false;"
+            >Register</a
+          >
+          <a
+            href="#"
+            id="logoutLink"
+            onclick="logoutUser(); return false;"
+            style="display: none"
+            >Logout</a
+          >
+        </div>
+      </div>
+    </div>
+
     <!-- Container to display book entries -->
-    <button onclick="fetchAndDisplayBooks()">All Books</button>
-    <button onclick="fetchAndDisplayLikedBooks()">Liked Books</button>
-    <span><div id="bookList" class="book-list"></div></span>
+    <div id="bookList" class="book-list"></div>
   </body>
 </html>
