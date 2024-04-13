@@ -86,15 +86,15 @@ label[for="pdfURL"] {
     border-width: thick;
     border-radius: 10px;
     border-color:rgb(35, 60, 103);
-    width: 550px;
+    display: flex;
 }
 #editBookModal label {
     margin-left: 25px;
 }
 #editBookModal h2 {
     margin-top: 0px;
-    margin-left: 20px;
-    text-align: center;
+    margin-left: 25px;
+    text-align: left;
     margin-bottom: 15px;
 }
 #editBookModal p {
