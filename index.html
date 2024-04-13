@@ -48,9 +48,10 @@
             required
             pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
             title="johndoe@example.com"
-          />
+          /><br />
+          <br />
 
-          <label for="registerPassword">Password:</label>
+          <label for="registerPassword">Password:</label> 
           <input
             type="password"
             id="registerPassword"
@@ -67,7 +68,7 @@
             name="confirmPassword"
             required
           />
-          <button type="button" onclick="registerUser()">Register</button>
+          <button type="button" id="regButton" onclick="registerUser()">Register</button>
         </form>
       </div>
     </div>
@@ -87,7 +88,7 @@
           <label for="loginPassword">Password:</label>
           <input type="password" id="loginPassword" name="password" required />
 
-          <button type="button" onclick="loginUser()">Login</button>
+          <button type="button" id="loginButton" onclick="loginUser()">Login</button>
         </form>
       </div>
     </div>
