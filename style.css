@@ -283,7 +283,7 @@ hr {
 #regButton:hover {
     background-color: rgb(91, 112, 146);
 }
-/* buttons inside the header */
+/* styles for buttons inside the header */
 .header-btn {
     padding: 10px 15px; 
     border: none; 
