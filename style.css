@@ -111,7 +111,7 @@ label[for="pdfURL"] {
 }
 /* Div styling for add book form */
 #addBookModal {
-    margin-top: 400px;
+    margin-top: 15px;
     margin-bottom: 15px;
     border: 2px;
     border-style: solid; 
