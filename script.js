@@ -195,6 +195,14 @@ async function fetchAndDisplayLikedBooks() {
       likeButton.addEventListener("click", function () {
         toggleLike(this.getAttribute("data-bookid"), this); // Passing 'this' as the second argument
       });
+
+      // Add event listeners for delete and edit buttons
+      const deleteButton = bookEntry.querySelector(".del-btn");
+      deleteButton.addEventListener("click", () => deleteBook(book.BookID));
+
+      const editButton = bookEntry.querySelector(".edit-btn");
+      editButton.addEventListener("click", () => loadBookForEdit(book.BookID));
+
     });
   } else {
     console.error("Failed to fetch liked books:", await response.text());
@@ -364,9 +372,19 @@ async function searchResultsDisplay(books) {
       likeButton.classList.add("liked");
     }
 
+    //event listener for like button
+
     likeButton.addEventListener("click", function () {
       toggleLike(this.getAttribute("data-bookid"), this);
     });
+
+    // Add event listeners for delete and edit buttons
+    const deleteButton = bookEntry.querySelector(".del-btn");
+    deleteButton.addEventListener("click", () => deleteBook(book.BookID));
+
+    const editButton = bookEntry.querySelector(".edit-btn");
+    editButton.addEventListener("click", () => loadBookForEdit(book.BookID));
+
   });
 }
 
