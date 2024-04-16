@@ -29,7 +29,6 @@ input[type=text] {
 input:focus {
     background-color: rgb(227, 232, 240);
 }
-
 /* Margin formatting for add/edit form labels */
 textarea {
     border-radius: 4px;
