@@ -6,7 +6,9 @@ const cors = require("cors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const app = express();
-const PORT = 3004;
+
+const PORT = 3002;
+
 
 // Use CORS middleware
 app.use(cors());
@@ -14,8 +16,8 @@ app.use(cors());
 // Create a MySQL connection pool
 const pool = mysql.createPool({
   host: "localhost",
-  user: "alex",
-  password: "Ballnchain18!",
+  user: "Dylan",
+  password: "fill in",
   database: "libraflow",
 });
 

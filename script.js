@@ -20,7 +20,9 @@ async function addBook() {
 
   try {
     const response = await fetch(
-      "http://localhost:3004/api/books?ISBN=${jsonObject.ISBN}"
+
+      "http://localhost:3002/api/books?ISBN=${jsonObject.ISBN}"
+
     );
     const { data } = await response.json();
 
@@ -30,7 +32,9 @@ async function addBook() {
       return;
     }
 
-    const addBookResponse = await fetch("http://localhost:3004/api/books", {
+
+    const addBookResponse = await fetch("http://localhost:3002/api/books", {
+
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(jsonObject),
@@ -66,7 +70,8 @@ async function fetchAndDisplayBooks() {
     likedBooksIds = await fetchLikedBooksIds();
   }
 
-  const response = await fetch("http://localhost:3004/api/books");
+  const response = await fetch("http://localhost:3002/api/books");
+
   if (response.ok) {
     const { data } = await response.json();
     const sorted = sortBooks(data);
@@ -133,7 +138,9 @@ async function fetchAndDisplayBooks() {
 // function to get users liked books
 async function fetchLikedBooksIds() {
   const token = localStorage.getItem("userToken");
-  const response = await fetch("http://localhost:3004/api/user/liked-books", {
+
+  const response = await fetch("http://localhost:3002/api/user/liked-books", {
+
     headers: { Authorization: `Bearer ${token}` },
   });
 
@@ -151,7 +158,8 @@ async function fetchAndDisplayLikedBooks() {
   // Retrieve the JWT token
   const token = localStorage.getItem("userToken");
 
-  const response = await fetch("http://localhost:3004/api/user/liked-books", {
+  const response = await fetch("http://localhost:3002/api/user/liked-books", {
+
     // Correct URL
     method: "GET",
     headers: {
@@ -216,7 +224,9 @@ async function fetchAndDisplayLikedBooks() {
 
 // function to delete a book
 async function deleteBook(bookID) {
-  const response = await fetch(`http://localhost:3004/api/books/${bookID}`, {
+
+  const response = await fetch(`http://localhost:3002/api/books/${bookID}`, {
+
     method: "DELETE",
   });
 
@@ -231,7 +241,9 @@ async function deleteBook(bookID) {
 
 // function to load book details into the editing form and show the modal
 async function loadBookForEdit(bookId) {
-  const url = `http://localhost:3004/api/books/${bookId}`;
+
+  const url = `http://localhost:3002/api/books/${bookId}`;
+
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -270,7 +282,9 @@ async function updateBook(event) {
   };
 
   try {
-    const response = await fetch(`http://localhost:3004/api/books/${bookId}`, {
+
+    const response = await fetch(`http://localhost:3002/api/books/${bookId}`, {
+
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedBookData),
@@ -307,7 +321,9 @@ async function searchBooks() {
   const searchTerm = searchInput.value.trim().toLowerCase();
 
   try {
-    const response = await fetch(`http://localhost:3004/api/books`);
+
+    const response = await fetch(`http://localhost:3002/api/books`);
+
     if (!response.ok) {
       throw new Error(`Failed to fetch books with status ${response.status}`);
     }
@@ -446,7 +462,9 @@ async function registerUser() {
     return;
   }
 
-  const response = await fetch("http://localhost:3004/api/users/register", {
+
+  const response = await fetch("http://localhost:3002/api/users/register", {
+
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -468,7 +486,9 @@ async function loginUser() {
   const username = document.getElementById("loginUsername").value;
   const password = document.getElementById("loginPassword").value;
 
-  const response = await fetch("http://localhost:3004/api/users/login", {
+
+  const response = await fetch("http://localhost:3002/api/users/login", {
+
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -764,7 +784,9 @@ async function toggleLike(bookId, likeButton) {
     return;
   }
 
-  const response = await fetch(`http://localhost:3004/api/books/like`, {
+
+  const response = await fetch(`http://localhost:3002/api/books/like`, {
+
     method: "POST",
     headers: {
       "Content-Type": "application/json",
