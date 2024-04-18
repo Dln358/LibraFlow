@@ -68,6 +68,8 @@
             name="confirmPassword"
             required
           />
+        
+          <br />
           <button type="button" id="regButton" onclick="registerUser()">Register</button>
         </form>
       </div>
@@ -88,6 +90,7 @@
           <label for="loginPassword">Password:</label>
           <input type="password" id="loginPassword" name="password" required />
 
+          <br />
           <button type="button" id="loginButton" onclick="loginUser()">Login</button>
         </form>
       </div>
@@ -272,8 +275,8 @@
           ></textarea
           ><br />
 
-          <button type="button" onclick="addBook()">Submit</button>
-          <button type="button" onclick="closeAddBookModal()">Cancel</button>
+          <button type="button" id="addButton" onclick="addBook()">Submit</button>
+          <button type="button" id="cancelButton" onclick="closeAddBookModal()">Cancel</button>
         </form>
       </div>
     </div>
