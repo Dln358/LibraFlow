@@ -868,3 +868,14 @@ function displayBooks(books) {
     booksContainer.appendChild(bookEntry);
   });
 }
+// Add event listener to the document body for edit and delete buttons
+document.body.addEventListener("click", function (event) {
+  const target = event.target;
+  if (target.classList.contains("edit-btn")) {
+    const bookId = target.dataset.bookid;
+    loadBookForEdit(bookId);
+  } else if (target.classList.contains("del-btn")) {
+    const bookId = target.dataset.bookid;
+    deleteBook(bookId);
+  }
+});
