@@ -387,7 +387,7 @@ async function searchResultsDisplay(books) {
         `;
     booksContainer.appendChild(bookEntry);
 
-    // Apply the liked state based on fetched likedBooksIds
+      // Apply the liked state based on fetched likedBooksIds
     const likeButton = bookEntry.querySelector(".like-btn");
     if (likedBooksIds.has(book.BookID.toString())) {
       likeButton.classList.add("liked");
@@ -823,7 +823,7 @@ function sortBooksByGenre(books) {
   return sortedBooks;
 }
 
-// Function to fetch, sort, and display books by genre
+/// Function to fetch, sort, and display books by genre
 async function sortByGenre() {
   try {
     const response = await fetch("http://localhost:3001/api/books");
@@ -833,15 +833,20 @@ async function sortByGenre() {
 
     const { data } = await response.json();
     const sortedBooks = sortBooksByGenre(data);
-    displayBooks(sortedBooks);
+    
+    // Fetch liked book IDs for the user
+    const likedBooksIds = await fetchLikedBooksIds();
+
+    // Display books with updated liked state
+    displayBooks(sortedBooks, likedBooksIds);
   } catch (error) {
     console.error("Failed to sort books by genre:", error);
     alert("Failed to sort books by genre. Please try again.");
   }
 }
 
-// Function to display books
-function displayBooks(books) {
+// Function to display books with updated liked state
+function displayBooks(books, likedBooksIds) {
   const booksContainer = document.getElementById("bookList");
   booksContainer.innerHTML = ""; // Clear existing entries
 
@@ -849,7 +854,7 @@ function displayBooks(books) {
     const bookEntry = document.createElement("div");
     bookEntry.innerHTML = `
       <div class="book">
-        <img class="book-image" img src="${book.ImageURL || "path/to/default/image.png"}" alt="Book Image">
+        <img class="book-image" src="${book.ImageURL || "path/to/default/image.png"}" alt="Book Image">
         <div class="btns">
           <a href="${book.PDFURL}" target="_blank" class="pdf-btn">View</a>
           <button class="edit-btn" data-bookid="${book.BookID}">Edit</button>
@@ -866,16 +871,23 @@ function displayBooks(books) {
       </div>
     `;
     booksContainer.appendChild(bookEntry);
+
+    // Apply the liked state based on fetched likedBooksIds
+    const likeButton = bookEntry.querySelector(".like-btn");
+    if (likedBooksIds.has(book.BookID.toString())) {
+      likeButton.classList.add("liked");
+    }
+
+    // Add event listener for like button
+    likeButton.addEventListener("click", function () {
+      toggleLike(book.BookID, this);
+    });
+
+    // Add event listeners for delete and edit buttons
+    const deleteButton = bookEntry.querySelector(".del-btn");
+    deleteButton.addEventListener("click", () => deleteBook(book.BookID));
+
+    const editButton = bookEntry.querySelector(".edit-btn");
+    editButton.addEventListener("click", () => loadBookForEdit(book.BookID));
   });
 }
-// Add event listener to the document body for edit and delete buttons
-document.body.addEventListener("click", function (event) {
-  const target = event.target;
-  if (target.classList.contains("edit-btn")) {
-    const bookId = target.dataset.bookid;
-    loadBookForEdit(bookId);
-  } else if (target.classList.contains("del-btn")) {
-    const bookId = target.dataset.bookid;
-    deleteBook(bookId);
-  }
-});
