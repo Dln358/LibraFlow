@@ -283,6 +283,96 @@ hr {
 #regButton:hover {
     background-color: rgb(91, 112, 146);
 }
+
+/* style for email modal */
+
+/* Change Email Modal Styling */
+#changeEmailModal {
+    background-color: rgb(102, 133, 176); 
+    color: #fff;
+    padding: 15px;
+    display: flex;
+    justify-content: center; 
+    align-items: left;
+    border-radius: 10px;
+    margin-bottom: 5px;
+    flex-direction: column; /* Ensures content is stacked vertically */
+}
+
+#changeEmailModal input {
+    border: 1px solid black;
+    border-radius: 4px;
+    padding: 2px 2px;
+    margin: 5px 0; /* Adds margin for vertical spacing between inputs */
+    width: 95%; /* Optional: Makes sure the input fields do not overflow the modal width */
+}
+
+#changeEmailModal button {
+    background-color: rgb(153, 175, 215);
+    padding: 8px 18px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 13px;
+    cursor: pointer;
+    margin-top: 10px; /* Adds a little space above the button */
+}
+
+#changeEmailModal button:hover {
+    background-color: rgb(91, 112, 146);
+}
+
+/* Current Email Display Styling */
+#currentEmailDisplay {
+    font-size: 16px;
+    color: #fff; /* Match text color to the modal's text color */
+    margin-bottom: 10px;
+}
+
+
+/* Change Password Modal Styling */
+#changePasswordModal {
+    background-color: rgb(102, 133, 176);
+    color: #fff;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: left;
+    border-radius: 10px;
+    margin-bottom: 5px;
+    flex-direction: column;  /* Ensures content is stacked vertically */
+}
+
+#changePasswordModal input {
+    border: 1px solid black;
+    border-radius: 4px;
+    padding: 2px 2px;
+    margin: 5px 0;  /* Adds margin for vertical spacing between inputs */
+    width: 95%;  /* Optional: Makes sure the input fields do not overflow the modal width */
+}
+
+#changePasswordModal button {
+    background-color: rgb(153, 175, 215);
+    padding: 8px 18px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 13px;
+    cursor: pointer;
+    margin-top: 10px;  /* Adds a little space above the button */
+}
+
+#changePasswordModal button:hover {
+    background-color: rgb(91, 112, 146);
+}
+
+#changePasswordModal label, #changePasswordModal input {
+    display: inline-block;
+}
+
+
+
+
 /* styles for buttons inside the header */
 .header-btn {
     padding: 10px 15px; 
