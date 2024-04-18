@@ -2,14 +2,14 @@
 import csv
 import os
 from flask import Flask, request, jsonify
+from flask_cors import CORS, cross_origin
 import pandas as pd
-import numpy as np
 import mysql.connector
 from sentence_transformers import SentenceTransformer
-from sklearn.neighbors import NearestNeighbors
 from joblib import load
 
 app = Flask(__name__)
+CORS(app) # CORS needed to enable all routes
 
 # Load the SentenceTransformer model and NearestNeighbors model
 model_st = SentenceTransformer('all-MiniLM-L6-v2')  # Ensure this model is only loaded once
@@ -68,8 +68,9 @@ def get_user_likes(user_id):
     conn.close()
     return liked_books
 
-# API endpoint for recommending a book 
+# API endpoint for recommending a book and enabling CORS with cross-origin
 @app.route('/recommend', methods=['POST'])
+@cross_origin()
 
 # Function to make recommendation
 def recommend():
@@ -112,6 +113,7 @@ def recommend():
         return jsonify({"recommended_titles": recommended_titles})
     else:
         return jsonify({"message": "No descriptions available to generate recommendations"}), 404
+    
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

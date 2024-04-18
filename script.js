@@ -561,3 +561,57 @@ async function toggleLike(bookId, likeButton) {
     alert(data.message);
   }
 }
+
+// Function to fetch and display book recommendations
+async function fetchRecommendations() {
+  const token = localStorage.getItem("userToken");
+  if (!token) {
+      console.log("No user token found. Please log in.");
+      alert("Please log in to get recommendations.");
+      return;
+  }
+
+  const userId = JSON.parse(atob(token.split('.')[1])).userID;
+  const url = `http://localhost:3002/api/recommendations/${userId}`;
+
+  console.log("Sending recommendation request to the server...", url);
+  
+  try {
+      const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+          }
+      });
+
+      console.log("Response status:", response.status);
+
+      if (response.ok) {
+          const data = await response.json();
+          console.log('Response data:', data);  // Check the full structure of the response
+          if (data.recommended_titles) {
+              console.log('Recommendations received:', data.recommended_titles);
+              const message = data.recommended_titles.join(", ");
+              alert("Recommendations: " + message);
+          } else {
+              console.log('No "recommended_titles" key found in response:', data);
+          }
+      } else {
+          const errorText = await response.text();
+          console.error(`Failed to fetch recommendations: ${response.status} - ${errorText}`);
+          alert("Failed to fetch recommendations. Please check the console for more details.");
+      }
+  } catch (error) {
+      console.error('Network error when fetching recommendations:', error);
+      alert("Network error. Please check the console for more details.");
+  }
+}
+
+// Event listener for the recommendation button
+document.addEventListener('DOMContentLoaded', function() {
+  const getRecBtn = document.getElementById('getRecommendationsBtn');
+  if (getRecBtn) {
+    getRecBtn.addEventListener('click', fetchRecommendations);
+  }
+});

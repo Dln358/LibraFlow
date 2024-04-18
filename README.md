@@ -17,8 +17,9 @@
 # Server Setup for node.js backend
 1. In your code editor(VScode) terminal enter the following dependencies. 
 2. " npm init -y ". If you dont bring in the node modules file
-3. " npm install express body-parser mysql ".
-4. " npm install cors bcrypt jsonwebtoken ". 
+3. npm install express body-parser mysql
+4. npm install cors bcrypt jsonwebtoken 
+5. npm install axios
 5. Ensure you are connected and running " node server.js ".
 6. In your Server.js file please enter the host, user, password, database names.
 7. Note I used port 3001, assuming this isn't used on your machine it should work. If taken you will need to change it to something like 3002 etc. and change it in script.js as well.
@@ -28,10 +29,10 @@
 1. You will need juypter notebooks
 2. Ensure that you're using the same kernel for the MLscript.py, and recommendations.ipynb for your pip/conda installs depending on your environment.
 3. pip install flask
-4. pip install mysql-connector-python
-5. pip install transformers sentence-transformers
-6. pip install pandas
-7. pip install numpy
+4. pip install flask-cors
+5. pip install mysql-connector-python
+6. pip install transformers sentence-transformers
+7. pip install pandas
 8. pip install joblib
 9. pip install scikit-learn
 10. In order to use the recommendation ML model system you must Install all these dependencies, and populate your database locally.

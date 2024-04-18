@@ -10,6 +10,10 @@ const PORT = 3002;
 
 // Use CORS middleware
 app.use(cors());
+app.use(express.json());
+
+// require microservice
+const { getRecommendations } = require('./microserviceAPI');
 
 // Create a MySQL connection pool
 const pool = mysql.createPool({
@@ -312,6 +316,20 @@ app.get("/api/user/liked-books", authenticateToken, async (req, res) => {
           res.status(404).json({ success: false, message: "No liked books found for this user." });
       }
   });
+});
+
+
+// API endpoint to get recommendations from microservice
+app.get('/api/recommendations/:userId', async (req, res) => {
+  const userId = req.params.userId;  // Correctly retrieve user ID from the request parameters
+  try {
+      const recommendations = await getRecommendations(userId);
+      console.log('Recommendations received:', recommendations);
+      res.json({recommended_titles: recommendations});
+  } catch (error) {
+      console.error('Failed to get recommendations:', error);
+      res.status(500).send('Server error');
+  }
 });
 
 // Start the server
