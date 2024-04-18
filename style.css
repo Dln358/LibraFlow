@@ -1,7 +1,6 @@
 /* Styling */
 .modal {
     display: none;
-    z-index: 1; /* Sit on top */
     /* other styles */
 }
 /* LibraFlow title */
@@ -35,12 +34,13 @@ textarea {
     margin-left: 25px;
     margin-top: 6px;
     margin-bottom: 6px;
+    width: 73.5%;
 }
 textarea:focus {
     background-color: rgb(227, 232, 240);
 }
 label[for="edit-title"] {
-    margin-right: 20px;
+    margin-right: 18px;
 }
 label[for="edit-genre"] {
     margin-right: 6px;
@@ -78,14 +78,22 @@ label[for="pdfURL"] {
 }
 /* Div styling for edit book form */
 #editBookModal {
-    margin-top: 30px;
-    margin-bottom: 30px;
-    border: 2px;
+    background-color: rgb(102, 133, 176);
+    color: white;
+    border: 1.5px;
     border-style: solid;
-    border-width: thick;
-    border-radius: 10px;
-    border-color:rgb(35, 60, 103);
-    display: flex;
+    border-radius: 8px;
+    border-color: rgb(35, 60, 103);
+    box-shadow: 2px 2px 3px rgb(114, 140, 182);
+    display: none;
+    z-index: 100;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30%;
+    overflow-y: auto;
+    max-height: 80%;
 }
 #editBookModal label {
     margin-left: 25px;
@@ -103,23 +111,38 @@ label[for="pdfURL"] {
     margin-top: 5px;
 }
 #editBookModal button {
+    background-color: rgb(153, 175, 215);
+    padding: 8px 18px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
     margin-left: 25px;
     margin-bottom: 25px;
 }
 #editBookModal button:hover {
-    box-shadow: 2px 2px 3px;
+    background-color: rgb(91, 112, 146);
+    box-shadow: 2px 2px 3px rgb(114, 140, 182);
 }
 
 /* Div styling for add book form */
 #addBookModal {
-    background-color: rgb(102, 133, 176); 
+    background-color: rgb(102, 133, 176);
     color: white;
-    margin-top: 5px;
-    margin-bottom: 10px;
-    border: none;
-    border-radius: 10px;
+    border: 1.5px;
+    border-style: solid;
+    border-radius: 8px;
     border-color: rgb(35, 60, 103);
-    display: flex;
+    box-shadow: 2px 2px 3px rgb(114, 140, 182);
+    display: none;
+    z-index: 100;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30%;
+    overflow-y: auto;
+    max-height: 80%;
 }
 #addBookModal label {
     margin-left: 25px;
@@ -201,6 +224,8 @@ hr {
     max-height: 100vh;
     overflow-y: auto;
     flex-grow: 1;
+    z-index: 99;
+    position: relative;
 }
 
 /* Custom scrollbar */
@@ -237,7 +262,7 @@ hr {
     background-color: rgb(102, 133, 176); 
     color: #fff;
     padding: 15px;
-    display: flex;
+    display: none;
     justify-content: start; 
     align-items: center;
     border-radius: 10px;
@@ -273,7 +298,7 @@ hr {
     background-color: rgb(102, 133, 176); 
     color: #fff;
     padding: 15px;
-    display: flex;
+    display: none;
     justify-content: start; 
     align-items: center;
     border-radius: 10px;
@@ -403,7 +428,7 @@ hr {
     background-color: #f9f9f9;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+    z-index: 101;
   }
   
   .dropdown-content a {
