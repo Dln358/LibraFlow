@@ -6,7 +6,7 @@ const cors = require("cors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const app = express();
-const PORT = 3003;
+const PORT = 3004;
 
 // Use CORS middleware
 app.use(cors());
@@ -251,6 +251,132 @@ app.post("/api/users/login", async (req, res) => {
     } else {
       res.status(404).json({ success: false, message: "User not found." });
     }
+  });
+});
+
+// API endpoint for email changes
+
+app.put("/api/user/email", authenticateToken, async (req, res) => {
+  const userId = req.user.userID; // Extracted from JWT
+  const { email: newEmail } = req.body;
+
+  // Fetch the current email from the database first
+  const currentEmailQuery = "SELECT Email FROM Users WHERE UserID = ?";
+  pool.query(currentEmailQuery, [userId], async (error, results) => {
+    if (error) {
+      console.error("Error fetching current email:", error);
+      return res.status(500).json({ success: false, message: "Internal server error." });
+    }
+    const currentEmail = results[0]?.Email;
+    if (currentEmail === newEmail) {
+      return res.status(400).json({ success: false, message: "The new email cannot be the same as the current email." });
+    }
+
+    // Simple regex for email validation
+    const emailRegex = /\S+@\S+\.\S+/;
+    if (!emailRegex.test(newEmail)) {
+      return res.status(400).json({ success: false, message: "Invalid email format." });
+    }
+
+    // Check if email is already in use
+    const emailInUseQuery = "SELECT UserID FROM Users WHERE Email = ? AND UserID <> ?";
+    pool.query(emailInUseQuery, [newEmail, userId], async (error, results) => {
+      if (error) {
+        console.error("Error checking if email is in use:", error);
+        return res.status(500).json({ success: false, message: "Internal server error." });
+      }
+      if (results.length > 0) {
+        return res.status(409).json({ success: false, message: "Email is already in use." });
+      }
+
+      // Update the email if it passes all checks
+      const updateQuery = "UPDATE Users SET Email = ? WHERE UserID = ?";
+      pool.query(updateQuery, [newEmail, userId], (error, results) => {
+        if (error) {
+          console.error("Error updating user email:", error);
+          return res.status(500).json({ success: false, message: "Internal server error." });
+        }
+        if (results.affectedRows === 0) {
+          return res.status(404).json({ success: false, message: "User not found." });
+        }
+        res.json({ success: true, message: "Email updated successfully." });
+      });
+    });
+  });
+});
+
+
+
+// API endpoint for password changes
+
+app.put("/api/user/password", authenticateToken, async (req, res) => {
+  const userId = req.user.userID;  // Extracted from JWT
+  const { currentPassword, newPassword } = req.body;
+
+  if (currentPassword === newPassword) {
+    return res.status(400).json({ success: false, message: "New password cannot be the same as the current password." });
+  }
+
+  // Password complexity regex (same as in registration endpoint)
+  const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+  if (!passwordRegex.test(newPassword)) {
+    return res.status(400).json({ success: false, message: "Password does not meet complexity requirements." });
+  }
+
+  // Retrieve the current hashed password from the database
+  pool.query("SELECT Password FROM Users WHERE UserID = ?", [userId], async (error, results) => {
+    if (error) return res.status(500).json({ success: false, message: "Internal server error." });
+
+    if (results.length > 0) {
+      const passwordMatch = await bcrypt.compare(currentPassword, results[0].Password);
+      if (passwordMatch) {
+        // If the current password matches, hash the new password and update it in the database
+        const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+        pool.query("UPDATE Users SET Password = ? WHERE UserID = ?", [hashedNewPassword, userId], (error, results) => {
+          if (error) return res.status(500).json({ success: false, message: "Internal server error." });
+          res.json({ success: true, message: "Password updated successfully." });
+        });
+      } else {
+        res.status(401).json({ success: false, message: "Incorrect current password." });
+      }
+    } else {
+      res.status(404).json({ success: false, message: "User not found." });
+    }
+  });
+});
+
+
+// API endpoint to get the current user's email
+app.get("/api/user/email", authenticateToken, (req, res) => {
+  const userId = req.user.userID; // userID is extracted from the JWT
+
+  pool.query("SELECT Email FROM Users WHERE UserID = ?", [userId], (error, results) => {
+    if (error) {
+      console.error("Error fetching user email:", error);
+      return res.status(500).json({ success: false, message: "Internal server error." });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ success: false, message: "User not found." });
+    }
+    // Assuming the first result is the user's email
+    const email = results[0].Email;
+    res.json({ success: true, email: email });
+  });
+});
+
+// API endpoint to get the current user's username
+app.get("/api/user/info", authenticateToken, (req, res) => {
+  const userId = req.user.userID; // userID extracted from JWT in the authenticateToken middleware
+
+  // Assuming you have a Users table with a Username column
+  pool.query("SELECT Username FROM Users WHERE UserID = ?", [userId], (error, results) => {
+      if (error) {
+          return res.status(500).json({ success: false, message: "Internal server error" });
+      }
+      if (results.length === 0) {
+          return res.status(404).json({ success: false, message: "User not found" });
+      }
+      res.json({ success: true, username: results[0].Username });
   });
 });
 
