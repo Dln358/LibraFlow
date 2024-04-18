@@ -40,3 +40,14 @@ CREATE TABLE Likes (
     FOREIGN KEY (UserID) REFERENCES Users(UserID),
     FOREIGN KEY (BookID) REFERENCES Books(BookID)
 );
+
+
+
+-- Table for users Bokkmarked books
+CREATE TABLE Bookmarks (
+    BookmarkID INT AUTO_INCREMENT PRIMARY KEY,
+    UserID INT,
+    BookID INT,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID),
+    FOREIGN KEY (BookID) REFERENCES Books(BookID)
+);

@@ -80,34 +80,24 @@ async function fetchAndDisplayBooks() {
 
     sorted.forEach((book) => {
       const bookEntry = document.createElement("div");
+      bookEntry.classList.add("book");
       bookEntry.innerHTML = `
-                <div class="book">
-                <img class="book-image" img src="${
-                  book.ImageURL || "path/to/default/image.png"
-                }" alt="Book Image">
-                <div class="btns">
-                <a href="${
-                  book.PDFURL
-                }" target="_blank" class="pdf-btn">View</a>
-                <button class="edit-btn" data-bookid="${
-                  book.BookID
-                }">Edit</button>
-                <button class="del-btn" data-bookid="${
-                  book.BookID
-                }">Delete</button>
-                </div>
-                <button class="like-btn" data-bookid="${book.BookID}"></button>
-                <div class="book-details">
-                <h3>${book.Title}</h3>
-                <p><strong>Author:</strong> ${book.Author}<br>
-                <strong>Genre:</strong> ${book.Genre}<br>
-                <strong>ISBN:</strong> ${book.ISBN}</p>
-                <div class="book-description"><strong>Description:</strong> ${
-                  book.Description
-                }</div>
-                </div>
-                </div>
-            `;
+          <img class="book-image" src="${book.ImageURL || "path/to/default/image.png"}" alt="Book Image">
+          <div class="btns">
+              <a href="${book.PDFURL}" target="_blank" class="pdf-btn">View</a>
+              <button class="edit-btn" data-bookid="${book.BookID}">Edit</button>
+              <button class="del-btn" data-bookid="${book.BookID}">Delete</button>
+          </div>
+          <button class="like-btn" data-bookid="${book.BookID}"></button>
+          <button class="bookmark-btn" data-bookid="${book.BookID}"></button> <!-- Added bookmark button -->
+          <div class="book-details">
+              <h3>${book.Title}</h3>
+              <p><strong>Author:</strong> ${book.Author}<br>
+              <strong>Genre:</strong> ${book.Genre}<br>
+              <strong>ISBN:</strong> ${book.ISBN}</p>
+              <div class="book-description"><strong>Description:</strong> ${book.Description}</div>
+          </div>
+      `;
       booksContainer.appendChild(bookEntry);
 
       // Apply the liked state within the forEach loop
@@ -121,6 +111,12 @@ async function fetchAndDisplayBooks() {
       // Add event listener for like button
       likeButton.addEventListener("click", function () {
         toggleLike(this.getAttribute("data-bookid"), this);
+      });
+
+      // Add event listener for bookmark button
+      const bookmarkButton = bookEntry.querySelector(".bookmark-btn");
+      bookmarkButton.addEventListener("click", function () {
+        toggleBookmark(this.getAttribute("data-bookid"), this);
       });
 
       // Add event listeners for delete and edit buttons
@@ -209,6 +205,7 @@ async function fetchAndDisplayLikedBooks() {
         toggleLike(this.getAttribute("data-bookid"), this); // Passing 'this' as the second argument
       });
 
+      
       // Add event listeners for delete and edit buttons
       const deleteButton = bookEntry.querySelector(".del-btn");
       deleteButton.addEventListener("click", () => deleteBook(book.BookID));
@@ -221,7 +218,72 @@ async function fetchAndDisplayLikedBooks() {
     console.error("Failed to fetch liked books:", await response.text());
   }
 }
+async function fetchAndDisplayBooks() {
+  const isLoggedIn = !!localStorage.getItem("userToken");
+  let likedBooksIds = new Set();
 
+  // If logged in, fetch liked books
+  if (isLoggedIn) {
+    likedBooksIds = await fetchLikedBooksIds();
+  }
+
+  const response = await fetch("http://localhost:3001/api/books");
+
+  if (response.ok) {
+    const { data } = await response.json();
+    const sorted = sortBooks(data);
+    const booksContainer = document.getElementById("bookList");
+    booksContainer.innerHTML = ""; // clear existing entries
+
+    sorted.forEach((book) => {
+      const bookEntry = document.createElement("div");
+      bookEntry.classList.add("book");
+      bookEntry.innerHTML = `
+          <img class="book-image" src="${book.ImageURL || "path/to/default/image.png"}" alt="Book Image">
+          <div class="btns">
+              <a href="${book.PDFURL}" target="_blank" class="pdf-btn">View</a>
+              <button class="edit-btn" data-bookid="${book.BookID}">Edit</button>
+              <button class="del-btn" data-bookid="${book.BookID}">Delete</button>
+          </div>
+          <button class="like-btn" data-bookid="${book.BookID}"></button>
+          <button class="bookmark-btn" data-bookid="${book.BookID}"></button>
+          <div class="book-details">
+              <h3>${book.Title}</h3>
+              <p><strong>Author:</strong> ${book.Author}<br>
+              <strong>Genre:</strong> ${book.Genre}<br>
+              <strong>ISBN:</strong> ${book.ISBN}</p>
+              <div class="book-description"><strong>Description:</strong> ${book.Description}</div>
+          </div>
+      `;
+      booksContainer.appendChild(bookEntry);
+
+      // Apply the liked state within the forEach loop
+      const likeButton = bookEntry.querySelector(".like-btn");
+      if (likedBooksIds.has(book.BookID.toString())) {
+        likeButton.classList.add("liked");
+      } else {
+        likeButton.classList.remove("liked");
+      }
+
+      // Add event listener for like button
+      likeButton.addEventListener("click", function () {
+        toggleLike(this.getAttribute("data-bookid"), this);
+      });
+
+      // Add event listener for bookmark button
+      const bookmarkButton = bookEntry.querySelector(".bookmark-btn");
+      const isBookmarked = checkIfBookIsBookmarked(book.BookID); // Implement this function
+      bookmarkButton.textContent = isBookmarked ? "Bookmarked" : "Bookmark";
+      bookmarkButton.classList.toggle("bookmarked", isBookmarked);
+
+      bookmarkButton.addEventListener("click", function () {
+        toggleBookmark(this.getAttribute("data-bookid"), this);
+      });
+    });
+  } else {
+    console.error("Failed to fetch books:", await response.text());
+  }
+}
 // function to delete a book
 async function deleteBook(bookID) {
 
@@ -803,6 +865,41 @@ async function toggleLike(bookId, likeButton) {
   }
 }
 
+// function for Bookmarking books
+async function toggleBookmark(bookId, bookmarkButton) {
+  const token = localStorage.getItem("userToken");
+  if (!token) {
+    alert("Please log in to bookmark books.");
+    return;
+  }
+
+
+  const response = await fetch(`http://localhost:3001/api/books/bookmark`, {
+
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ bookId }),
+  });
+
+  const data = await response.json();
+  if (data.success) {
+    bookmarkButton.classList.toggle("bookmarked", data.bookmarked); // Toggle based on the liked status
+  } else {
+    alert(data.message);
+  }
+}
+// Listener for switching to the Liked Books tab
+document.getElementById("likedBooksTab").addEventListener("click", () => {
+  fetchAndDisplayLikedBooks(); // Call fetchAndDisplayLikedBooks function
+});
+
+// Listener for switching to the Bookmarked Books tab
+document.getElementById("bookmarkedBooksTab").addEventListener("click", () => {
+  fetchAndDisplayBookmarkedBooks(); // Call fetchAndDisplayBookmarkedBooks function
+});
 // function for making users likes appear after login
 async function applyLikedStateToBooks() {
   // Fetch liked book IDs for the user
