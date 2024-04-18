@@ -21,7 +21,7 @@ async function addBook() {
   try {
     const response = await fetch(
 
-      "http://localhost:3002/api/books?ISBN=${jsonObject.ISBN}"
+      "http://localhost:3001/api/books?ISBN=${jsonObject.ISBN}"
 
     );
     const { data } = await response.json();
@@ -33,7 +33,7 @@ async function addBook() {
     }
 
 
-    const addBookResponse = await fetch("http://localhost:3002/api/books", {
+    const addBookResponse = await fetch("http://localhost:3001/api/books", {
 
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -70,7 +70,7 @@ async function fetchAndDisplayBooks() {
     likedBooksIds = await fetchLikedBooksIds();
   }
 
-  const response = await fetch("http://localhost:3002/api/books");
+  const response = await fetch("http://localhost:3001/api/books");
 
   if (response.ok) {
     const { data } = await response.json();
@@ -139,7 +139,7 @@ async function fetchAndDisplayBooks() {
 async function fetchLikedBooksIds() {
   const token = localStorage.getItem("userToken");
 
-  const response = await fetch("http://localhost:3002/api/user/liked-books", {
+  const response = await fetch("http://localhost:3001/api/user/liked-books", {
 
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -158,7 +158,7 @@ async function fetchAndDisplayLikedBooks() {
   // Retrieve the JWT token
   const token = localStorage.getItem("userToken");
 
-  const response = await fetch("http://localhost:3002/api/user/liked-books", {
+  const response = await fetch("http://localhost:3001/api/user/liked-books", {
 
     // Correct URL
     method: "GET",
@@ -225,7 +225,7 @@ async function fetchAndDisplayLikedBooks() {
 // function to delete a book
 async function deleteBook(bookID) {
 
-  const response = await fetch(`http://localhost:3002/api/books/${bookID}`, {
+  const response = await fetch(`http://localhost:3001/api/books/${bookID}`, {
 
     method: "DELETE",
   });
@@ -242,7 +242,7 @@ async function deleteBook(bookID) {
 // function to load book details into the editing form and show the modal
 async function loadBookForEdit(bookId) {
 
-  const url = `http://localhost:3002/api/books/${bookId}`;
+  const url = `http://localhost:3001/api/books/${bookId}`;
 
   try {
     const response = await fetch(url);
@@ -283,7 +283,7 @@ async function updateBook(event) {
 
   try {
 
-    const response = await fetch(`http://localhost:3002/api/books/${bookId}`, {
+    const response = await fetch(`http://localhost:3001/api/books/${bookId}`, {
 
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -322,7 +322,7 @@ async function searchBooks() {
 
   try {
 
-    const response = await fetch(`http://localhost:3002/api/books`);
+    const response = await fetch(`http://localhost:3001/api/books`);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch books with status ${response.status}`);
@@ -463,7 +463,7 @@ async function registerUser() {
   }
 
 
-  const response = await fetch("http://localhost:3002/api/users/register", {
+  const response = await fetch("http://localhost:3001/api/users/register", {
 
     method: "POST",
     headers: {
@@ -487,7 +487,7 @@ async function loginUser() {
   const password = document.getElementById("loginPassword").value;
 
 
-  const response = await fetch("http://localhost:3002/api/users/login", {
+  const response = await fetch("http://localhost:3001/api/users/login", {
 
     method: "POST",
     headers: {
@@ -582,7 +582,7 @@ function openEmailModal() {
      return;
    }
  
-   fetch('http://localhost:3004/api/user/email', {
+   fetch('http://localhost:3001/api/user/email', {
      method: 'GET',
      headers: {
        'Authorization': `Bearer ${token}`
@@ -656,7 +656,7 @@ async function changeEmail() {
   const token = localStorage.getItem("userToken");
 
   try {
-    const response = await fetch("http://localhost:3004/api/user/email", {
+    const response = await fetch("http://localhost:3001/api/user/email", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -688,7 +688,7 @@ async function changePassword() {
   const token = localStorage.getItem("userToken");
 
   try {
-    const response = await fetch("http://localhost:3004/api/user/password", {
+    const response = await fetch("http://localhost:3001/api/user/password", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -719,7 +719,7 @@ async function fetchAndDisplayCurrentEmail() {
   }
 
   try {
-    const response = await fetch('http://localhost:3004/api/user/email', {
+    const response = await fetch('http://localhost:3001/api/user/email', {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -744,7 +744,7 @@ function updateUsernameDisplay() {
       return; // Exit if no token, continue as "Guest"
   }
 
-  fetch("http://localhost:3004/api/user/info", {
+  fetch("http://localhost:3001/api/user/info", {
       headers: {
           "Authorization": `Bearer ${token}`
       }
@@ -785,7 +785,7 @@ async function toggleLike(bookId, likeButton) {
   }
 
 
-  const response = await fetch(`http://localhost:3002/api/books/like`, {
+  const response = await fetch(`http://localhost:3001/api/books/like`, {
 
     method: "POST",
     headers: {
@@ -814,5 +814,57 @@ async function applyLikedStateToBooks() {
     if (likedBooksIds.has(bookId)) {
       button.classList.add("liked");
     }
+  });
+}
+// Function to sort books by genre in alphabetical order
+function sortBooksByGenre(books) {
+  const sortedBooks = [...books]; // Create a copy of the books array to avoid modifying the original
+  sortedBooks.sort((a, b) => a.Genre.localeCompare(b.Genre)); // Sort books by genre
+  return sortedBooks;
+}
+
+// Function to fetch, sort, and display books by genre
+async function sortByGenre() {
+  try {
+    const response = await fetch("http://localhost:3001/api/books");
+    if (!response.ok) {
+      throw new Error(`Failed to fetch books with status ${response.status}`);
+    }
+
+    const { data } = await response.json();
+    const sortedBooks = sortBooksByGenre(data);
+    displayBooks(sortedBooks);
+  } catch (error) {
+    console.error("Failed to sort books by genre:", error);
+    alert("Failed to sort books by genre. Please try again.");
+  }
+}
+
+// Function to display books
+function displayBooks(books) {
+  const booksContainer = document.getElementById("bookList");
+  booksContainer.innerHTML = ""; // Clear existing entries
+
+  books.forEach((book) => {
+    const bookEntry = document.createElement("div");
+    bookEntry.innerHTML = `
+      <div class="book">
+        <img class="book-image" img src="${book.ImageURL || "path/to/default/image.png"}" alt="Book Image">
+        <div class="btns">
+          <a href="${book.PDFURL}" target="_blank" class="pdf-btn">View</a>
+          <button class="edit-btn" data-bookid="${book.BookID}">Edit</button>
+          <button class="del-btn" data-bookid="${book.BookID}">Delete</button>
+        </div>
+        <button class="like-btn" data-bookid="${book.BookID}"></button>
+        <div class="book-details">
+          <h3>${book.Title}</h3>
+          <p><strong>Author:</strong> ${book.Author}<br>
+          <strong>Genre:</strong> ${book.Genre}<br>
+          <strong>ISBN:</strong> ${book.ISBN}</p>
+          <div class="book-description"><strong>Description:</strong> ${book.Description}</div>
+        </div>
+      </div>
+    `;
+    booksContainer.appendChild(bookEntry);
   });
 }
