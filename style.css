@@ -693,20 +693,19 @@ hr {
      --c: red !important;
  }
   
- /* Like/heart button style */
-.bookmark-btn {
-    position: absolute;
-    top: 50px;
-    right: 10px;
-    width: 40px; 
-    aspect-ratio: 1;
-    --c: #c9c9c9;
-    border-image: radial-gradient(var(--c) 69%, #0000 70%) 84.5%/50%;
-    clip-path: polygon(-43% 0,50% 91%, 143% 0);
-    cursor: pointer;
- } 
+ /* Square bookmark button */
 
- .bookmark-btn.liked {
-     --c: red !important;
- }
-  
+ .bookmark-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.bookmark-btn.bookmarked {
+    background-color: yellow !important;
+}

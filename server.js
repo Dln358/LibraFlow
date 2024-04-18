@@ -470,10 +470,10 @@ app.post("/api/books/bookmark", authenticateToken, async (req, res) => {
   });
 });
 
-// API endpoint to get liked books details for a specific user
+// API endpoint to get bookmarked books details for a specific user
 app.get("/api/user/bookmarked-books", authenticateToken, async (req, res) => {
   const userId = req.user.userID; // Extracted from JWT
-  // SQL query to join Likes and Books tables to fetch liked books details for the specified user
+  // SQL query to join Bookmarks and Books tables to fetch Bookmarked books details for the specified user
   const query = `
       SELECT B.BookID, B.Title, B.Author, B.Genre, B.ISBN, B.ImageURL, B.PDFURL, B.Description
       FROM Bookmarks L
@@ -488,10 +488,10 @@ app.get("/api/user/bookmarked-books", authenticateToken, async (req, res) => {
       }
 
       if (results.length > 0) {
-          // Return the list of liked books for the user
+          // Return the list of bookmarked books for the user
           res.json({ success: true, bookmarkedBooks: results });
       } else {
-          // Handle the case where the user has not liked any books
+          // Handle the case where the user has not bookmarked any books
           res.status(404).json({ success: false, message: "No bookmarked books found for this user." });
       }
   });

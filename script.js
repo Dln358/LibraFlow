@@ -218,72 +218,7 @@ async function fetchAndDisplayLikedBooks() {
     console.error("Failed to fetch liked books:", await response.text());
   }
 }
-async function fetchAndDisplayBooks() {
-  const isLoggedIn = !!localStorage.getItem("userToken");
-  let likedBooksIds = new Set();
 
-  // If logged in, fetch liked books
-  if (isLoggedIn) {
-    likedBooksIds = await fetchLikedBooksIds();
-  }
-
-  const response = await fetch("http://localhost:3001/api/books");
-
-  if (response.ok) {
-    const { data } = await response.json();
-    const sorted = sortBooks(data);
-    const booksContainer = document.getElementById("bookList");
-    booksContainer.innerHTML = ""; // clear existing entries
-
-    sorted.forEach((book) => {
-      const bookEntry = document.createElement("div");
-      bookEntry.classList.add("book");
-      bookEntry.innerHTML = `
-          <img class="book-image" src="${book.ImageURL || "path/to/default/image.png"}" alt="Book Image">
-          <div class="btns">
-              <a href="${book.PDFURL}" target="_blank" class="pdf-btn">View</a>
-              <button class="edit-btn" data-bookid="${book.BookID}">Edit</button>
-              <button class="del-btn" data-bookid="${book.BookID}">Delete</button>
-          </div>
-          <button class="like-btn" data-bookid="${book.BookID}"></button>
-          <button class="bookmark-btn" data-bookid="${book.BookID}"></button>
-          <div class="book-details">
-              <h3>${book.Title}</h3>
-              <p><strong>Author:</strong> ${book.Author}<br>
-              <strong>Genre:</strong> ${book.Genre}<br>
-              <strong>ISBN:</strong> ${book.ISBN}</p>
-              <div class="book-description"><strong>Description:</strong> ${book.Description}</div>
-          </div>
-      `;
-      booksContainer.appendChild(bookEntry);
-
-      // Apply the liked state within the forEach loop
-      const likeButton = bookEntry.querySelector(".like-btn");
-      if (likedBooksIds.has(book.BookID.toString())) {
-        likeButton.classList.add("liked");
-      } else {
-        likeButton.classList.remove("liked");
-      }
-
-      // Add event listener for like button
-      likeButton.addEventListener("click", function () {
-        toggleLike(this.getAttribute("data-bookid"), this);
-      });
-
-      // Add event listener for bookmark button
-      const bookmarkButton = bookEntry.querySelector(".bookmark-btn");
-      const isBookmarked = checkIfBookIsBookmarked(book.BookID); // Implement this function
-      bookmarkButton.textContent = isBookmarked ? "Bookmarked" : "Bookmark";
-      bookmarkButton.classList.toggle("bookmarked", isBookmarked);
-
-      bookmarkButton.addEventListener("click", function () {
-        toggleBookmark(this.getAttribute("data-bookid"), this);
-      });
-    });
-  } else {
-    console.error("Failed to fetch books:", await response.text());
-  }
-}
 // function to delete a book
 async function deleteBook(bookID) {
 
@@ -547,7 +482,6 @@ async function registerUser() {
 async function loginUser() {
   const username = document.getElementById("loginUsername").value;
   const password = document.getElementById("loginPassword").value;
-
 
   const response = await fetch("http://localhost:3001/api/users/login", {
 
@@ -832,12 +766,6 @@ function updateUsernameDisplay() {
   });
 }
 
-
-
-
-
-
-
 // function for liking books
 async function toggleLike(bookId, likeButton) {
   const token = localStorage.getItem("userToken");
@@ -845,7 +773,6 @@ async function toggleLike(bookId, likeButton) {
     alert("Please log in to like books.");
     return;
   }
-
 
   const response = await fetch(`http://localhost:3001/api/books/like`, {
 
@@ -865,7 +792,7 @@ async function toggleLike(bookId, likeButton) {
   }
 }
 
-// function for Bookmarking books
+
 async function toggleBookmark(bookId, bookmarkButton) {
   const token = localStorage.getItem("userToken");
   if (!token) {
@@ -873,9 +800,7 @@ async function toggleBookmark(bookId, bookmarkButton) {
     return;
   }
 
-
   const response = await fetch(`http://localhost:3001/api/books/bookmark`, {
-
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -886,9 +811,65 @@ async function toggleBookmark(bookId, bookmarkButton) {
 
   const data = await response.json();
   if (data.success) {
-    bookmarkButton.classList.toggle("bookmarked", data.bookmarked); // Toggle based on the liked status
+    bookmarkButton.classList.toggle("bookmarked", data.bookmarked); // Toggle based on the bookmarked status
   } else {
     alert(data.message);
+  }
+}
+// Add a function to fetch and display bookmarked books
+async function fetchAndDisplayBookmarkedBooks() {
+  const token = localStorage.getItem("userToken");
+
+  const response = await fetch("http://localhost:3001/api/user/bookmarked-books", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (response.ok) {
+    const responseBody = await response.json();
+    const { bookmarkedBooks } = responseBody;
+    const booksContainer = document.getElementById("bookList");
+    booksContainer.innerHTML = ""; // Clear existing entries
+
+    bookmarkedBooks.forEach((book) => {
+      const bookEntry = document.createElement("div");
+      bookEntry.innerHTML = `
+      <div class="book">
+        <img class="book-image" src="${book.ImageURL || "path/to/default/image.png"}" alt="Book Image">
+        <div class="btns">
+          <a href="${book.PDFURL}" target="_blank" class="pdf-btn">View</a>
+          <button class="edit-btn" data-bookid="${book.BookID}">Edit</button>
+          <button class="del-btn" data-bookid="${book.BookID}">Delete</button>
+        </div>
+        <button class="like-btn" data-bookid="${book.BookID}"></button>
+        <button class="bookmark-btn" data-bookid="${book.BookID}"></button>
+        <div class="book-details">
+          <h3>${book.Title}</h3>
+          <strong>Genre:</strong> ${book.Genre}<br>
+          <strong>ISBN:</strong> ${book.ISBN}</p>
+          <div class="book-description"><strong>Description:</strong> ${book.Description}</div>
+        </div>
+      </div>
+      `;
+      booksContainer.appendChild(bookEntry);
+
+      const bookmarkButton = bookEntry.querySelector(".bookmark-btn");
+      bookmarkButton.classList.add("bookmarked");
+
+      bookmarkButton.addEventListener("click", function () {
+        toggleBookmark(book.BookID, this);
+      });
+
+      const deleteButton = bookEntry.querySelector(".del-btn");
+      deleteButton.addEventListener("click", () => deleteBook(book.BookID));
+
+      const editButton = bookEntry.querySelector(".edit-btn");
+      editButton.addEventListener("click", () => loadBookForEdit(book.BookID));
+    });
+  } else {
+    console.error("Failed to fetch bookmarked books:", await response.text());
   }
 }
 // Listener for switching to the Liked Books tab
@@ -958,6 +939,7 @@ function displayBooks(books, likedBooksIds) {
           <button class="del-btn" data-bookid="${book.BookID}">Delete</button>
         </div>
         <button class="like-btn" data-bookid="${book.BookID}"></button>
+        <button class="bookmark-btn" data-bookid="${book.BookID}"></button>
         <div class="book-details">
           <h3>${book.Title}</h3>
           <p><strong>Author:</strong> ${book.Author}<br>
@@ -980,11 +962,15 @@ function displayBooks(books, likedBooksIds) {
       toggleLike(book.BookID, this);
     });
 
-    // Add event listeners for delete and edit buttons
-    const deleteButton = bookEntry.querySelector(".del-btn");
-    deleteButton.addEventListener("click", () => deleteBook(book.BookID));
+    // Add event listener for bookmark button
+    const bookmarkButton = bookEntry.querySelector(".bookmark-btn");
+    bookmarkButton.addEventListener("click", function () {
+      toggleBookmark(book.BookID, this);
+    });
 
-    const editButton = bookEntry.querySelector(".edit-btn");
-    editButton.addEventListener("click", () => loadBookForEdit(book.BookID));
+    // Check if the book is bookmarked and update the button accordingly
+    if (book.bookmarked) {
+      bookmarkButton.classList.add("bookmarked");
+    }
   });
-}
+} 
