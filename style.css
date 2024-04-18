@@ -28,6 +28,18 @@ input[type=text] {
 input:focus {
     background-color: rgb(227, 232, 240);
 }
+
+/* Spacing for change email/password forms */
+input[type="password"] {
+    margin: 5px 0;
+}
+label[for="newPassword"] {
+    margin-right: 21px;
+}
+label[for="newEmail"] {
+    margin-right: 18px;
+}
+
 /* Margin formatting for add/edit form labels */
 textarea {
     border-radius: 4px;
@@ -354,7 +366,7 @@ hr {
     border-radius: 4px;
     padding: 2px 2px;
     margin: 5px 0; /* Adds margin for vertical spacing between inputs */
-    width: 95%; /* Optional: Makes sure the input fields do not overflow the modal width */
+    width: 20%; /* Optional: Makes sure the input fields do not overflow the modal width */
 }
 
 #changeEmailModal button {
@@ -398,7 +410,7 @@ hr {
     border-radius: 4px;
     padding: 2px 2px;
     margin: 5px 0;  /* Adds margin for vertical spacing between inputs */
-    width: 95%;  /* Optional: Makes sure the input fields do not overflow the modal width */
+    width: 20%;  /* Optional: Makes sure the input fields do not overflow the modal width */
 }
 
 #changePasswordModal button {

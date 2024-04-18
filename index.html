@@ -68,7 +68,7 @@
             name="confirmPassword"
             required
           />
-          
+
           <br />
           <br />
           <button type="button" id="regButton" onclick="registerUser()">Register</button>
@@ -111,6 +111,8 @@
           <label for="newEmail">New Email:</label>
           <input type="email" id="newEmail" name="newEmail" required pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
           title="user@example.com" />
+
+          <br />
           <button type="button" onclick="changeEmail()">Change Email</button>
         </form>
       </div>
@@ -126,11 +128,13 @@
         <form id="changePasswordForm">
           <label for="currentPassword">Current Password:</label>
           <input type="password" id="currentPassword" name="currentPassword" required />
-    
+          
+          <br />
           <label for="newPassword">New Password:</label>
           <input type="password" id="newPassword" name="newPassword" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
             title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" />
-    
+          
+            <br />
           <button type="button" onclick="changePassword()">Change Password</button>
         </form>
       </div>
