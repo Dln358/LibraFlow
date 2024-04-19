@@ -792,7 +792,6 @@ async function toggleLike(bookId, likeButton) {
   }
 }
 
-
 async function toggleBookmark(bookId, bookmarkButton) {
   const token = localStorage.getItem("userToken");
   if (!token) {
@@ -816,6 +815,7 @@ async function toggleBookmark(bookId, bookmarkButton) {
     alert(data.message);
   }
 }
+
 // Add a function to fetch and display bookmarked books
 async function fetchAndDisplayBookmarkedBooks() {
   const token = localStorage.getItem("userToken");
