@@ -442,6 +442,61 @@ app.get("/api/user/liked-books", authenticateToken, async (req, res) => {
   });
 });
 
+// API endpoint to store user bookmarks
+app.post("/api/books/bookmark", authenticateToken, async (req, res) => {
+  const userId = req.user.userID; // Extracted from JWT
+  const { bookId } = req.body;
+
+  // Check if the book is already bookmarked by the user
+  const existingBookmarkQuery = "SELECT * FROM bookmarks WHERE UserID = ? AND BookID = ?";
+  pool.query(existingBookmarkQuery, [userId, bookId], (error, results) => {
+      if (error) return res.status(500).json({ message: "Internal server error" });
+
+      if (results.length > 0) {
+          // UnBookmark the book
+          const deleteBookmarkQuery = "DELETE FROM bookmarks WHERE UserID = ? AND BookID = ?";
+          pool.query(deleteBookmarkQuery, [userId, bookId], (error) => {
+              if (error) return res.status(500).json({ message: "Internal server error" });
+              res.json({ success: true, bookmarked: false, message: "UnBookmark successfully." });
+          });
+      } else {
+          // Bookmark the book
+          const insertBookmarkQuery = "INSERT INTO bookmarks (UserID, BookID) VALUES (?, ?)";
+          pool.query(insertBookmarkQuery, [userId, bookId], (error) => {
+              if (error) return res.status(500).json({ message: "Internal server error" });
+              res.json({ success: true, bookmarked: true, message: "Book bookmarked successfully." });
+          });
+      }
+  });
+});
+
+// API endpoint to get bookmarked books details for a specific user
+app.get("/api/user/bookmarked-books", authenticateToken, async (req, res) => {
+  const userId = req.user.userID; // Extracted from JWT
+  // SQL query to join Bookmarks and Books tables to fetch Bookmarked books details for the specified user
+  const query = `
+      SELECT B.BookID, B.Title, B.Author, B.Genre, B.ISBN, B.ImageURL, B.PDFURL, B.Description
+      FROM Bookmarks L
+      INNER JOIN Books B ON L.BookID = B.BookID
+      WHERE L.UserID = ?;
+  `;
+
+  pool.query(query, [userId], (error, results) => {
+      if (error) {
+          // Handle any errors during query execution
+          return res.status(500).json({ message: "Internal server error" });
+      }
+
+      if (results.length > 0) {
+          // Return the list of bookmarked books for the user
+          res.json({ success: true, bookmarkedBooks: results });
+      } else {
+          // Handle the case where the user has not bookmarked any books
+          res.status(404).json({ success: false, message: "No bookmarked books found for this user." });
+      }
+  });
+});
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

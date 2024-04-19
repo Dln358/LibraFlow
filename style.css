@@ -705,3 +705,19 @@ hr {
      --c: red !important;
  }
   
+ /* Square bookmark button */
+
+ .bookmark-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.bookmark-btn.bookmarked {
+    background-color: yellow !important;
+}
