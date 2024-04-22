@@ -39,5 +39,3 @@
 12. You then must run all code blocks in the recommendation.ipynb file. After completion you will have the .pkl files in your directory for use in the MLscript.py file.
 13. You can now run the MLscript.py file, your books.csv will update with all database entries.
 14. You can now retrain the model on the entirety of the database, and redeploy the newly trained model.
-
-# How to use the Application 
